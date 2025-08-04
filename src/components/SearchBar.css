@@ -16,6 +16,7 @@
   border-radius: var(--border-radius);
   font-size: 14px;
   background-color: #f9fafb;
+  color: #1f2937;
 }
 
 .search-input:focus {

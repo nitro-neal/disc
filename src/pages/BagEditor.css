@@ -179,6 +179,7 @@
   border: 1px solid #d1d5db;
   border-radius: var(--border-radius);
   font-size: 1rem;
+  color: #1f2937;
 }
 
 .category-filter {
