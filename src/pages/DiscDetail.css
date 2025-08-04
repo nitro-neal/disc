@@ -1,0 +1,261 @@
+.disc-detail {
+  padding-bottom: var(--spacing-xl);
+}
+
+.loading-page, .error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  gap: var(--spacing-lg);
+}
+
+.error-page h1 {
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.error-page p {
+  color: #6b7280;
+  font-size: 1.125rem;
+}
+
+/* Disc Header */
+.disc-header {
+  display: flex;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  align-items: flex-start;
+}
+
+.disc-image {
+  flex-shrink: 0;
+}
+
+.disc-placeholder-large {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 4rem;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
+}
+
+.disc-header-info {
+  flex: 1;
+  padding-top: var(--spacing-lg);
+}
+
+.disc-brand {
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.disc-name {
+  color: #1f2937;
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.1;
+}
+
+.disc-numbers {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.number {
+  background-color: #f3f4f6;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  font-family: 'Monaco', 'Menlo', monospace;
+  color: #374151;
+}
+
+.disc-stability {
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Actions */
+.disc-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.disc-actions .btn-primary,
+.disc-actions .btn-outline,
+.disc-actions .btn-secondary {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 1rem;
+}
+
+/* Specifications */
+.disc-specs {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.disc-specs h2 {
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.spec-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.spec-value {
+  font-size: 1.125rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* Similar Discs */
+.similar-discs {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: var(--spacing-xl);
+}
+
+.similar-discs h2 {
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+}
+
+.similar-discs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.similar-disc-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid #f3f4f6;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.similar-disc-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+
+.similar-disc-image {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.similar-disc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.similar-disc-name {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: var(--spacing-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.similar-disc-brand {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.similar-disc-numbers {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .disc-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-lg);
+  }
+  
+  .disc-placeholder-large {
+    width: 150px;
+    height: 150px;
+    font-size: 3rem;
+  }
+  
+  .disc-name {
+    font-size: 2rem;
+  }
+  
+  .disc-numbers {
+    justify-content: center;
+  }
+  
+  .disc-actions {
+    justify-content: center;
+  }
+  
+  .specs-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .similar-discs-grid {
+    grid-template-columns: 1fr;
+  }
+}
