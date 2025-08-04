@@ -26,7 +26,8 @@ export async function loadDiscs() {
 
     // Load fresh data from the JSON file
     console.log('Loading fresh disc data');
-    const response = await fetch('/disc/discs.json');
+    // Use raw GitHub link to avoid GitHub Pages serving issues
+    const response = await fetch('https://raw.githubusercontent.com/nitro-neal/disc/refs/heads/main/discs.json');
     
     if (!response.ok) {
       throw new Error(`Failed to fetch discs: ${response.statusText}`);
