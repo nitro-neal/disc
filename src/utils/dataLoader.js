@@ -26,7 +26,7 @@ export async function loadDiscs() {
 
     // Load fresh data from the JSON file
     console.log('Loading fresh disc data');
-    const response = await fetch('/discs.json');
+    const response = await fetch('./discs.json');
     
     if (!response.ok) {
       throw new Error(`Failed to fetch discs: ${response.statusText}`);
