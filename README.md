@@ -30,23 +30,27 @@ Visit the live app: **[https://yourusername.github.io/discgolfpro/](https://your
 ## 🏃‍♂️ Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/discgolfpro.git
    cd discgolfpro
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -94,28 +98,33 @@ src/
 ## 🎯 Key Features Explained
 
 ### Smart Search
+
 - Fuzzy matching on disc names, brands, and categories
 - Keyboard navigation with arrow keys
 - Real-time results with highlighting
 
 ### Flight Search
+
 - Interactive range sliders for Speed, Glide, Turn, Fade
 - URL parameter sync for shareable searches
 - Debounced filtering for smooth performance
 
 ### Bag Builder
+
 - Local storage persistence
 - Category-based organization
 - Auto-save every 1 second
 - Duplicate disc support
 
 ### Bag Reports
+
 - 15×7 visual flight chart
 - Speed coverage analysis
 - Stability balance recommendations
 - Category breakdown
 
 ### Flight Visualization
+
 - Dynamic SVG curves based on flight numbers
 - Physically accurate flight paths
 - Interactive tooltips and labels
@@ -125,11 +134,13 @@ src/
 The app is configured for automatic deployment to GitHub Pages via GitHub Actions.
 
 ### Automatic Deployment
+
 1. Push to `main` branch
 2. GitHub Actions builds and deploys automatically
 3. Available at `https://yourusername.github.io/discgolfpro/`
 
 ### Manual Deployment
+
 ```bash
 npm run deploy
 ```
