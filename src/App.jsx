@@ -14,7 +14,7 @@ import './App.css';
 function App() {
   return (
     <ContextProvider>
-      <Router>
+      <Router basename="/disc">
         <AppShell>
           <Routes>
             <Route path="/" element={<Home />} />
