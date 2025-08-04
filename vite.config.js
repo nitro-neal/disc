@@ -14,7 +14,7 @@ export default defineConfig(({ command }) => {
 
   // Only set base path for production builds (GitHub Pages)
   if (command !== 'serve') {
-    config.base = '/discgolfpro/'
+    config.base = '/disc/'
   }
 
   return config
