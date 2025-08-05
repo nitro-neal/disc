@@ -33,6 +33,13 @@ html, body {
   --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Container for consistent layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
 /* Focus styles for accessibility */
 *:focus-visible {
   outline: 2px dashed #444;

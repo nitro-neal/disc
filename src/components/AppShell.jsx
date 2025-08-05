@@ -45,6 +45,13 @@ function AppShell({ children }) {
                 Flight Search
               </Link>
               <Link 
+                to="/get-good" 
+                className={`nav-link ${isActive('/get-good') ? 'active' : ''}`}
+              >
+                Get Good
+              </Link>
+
+              <Link 
                 to="/bags" 
                 className={`nav-link ${isActive('/bags') ? 'active' : ''}`}
               >
@@ -96,6 +103,13 @@ function AppShell({ children }) {
               onClick={() => setIsMenuOpen(false)}
             >
               My Bags
+            </Link>
+            <Link 
+              to="/get-good" 
+              className={`mobile-nav-link ${isActive('/get-good') ? 'active' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Get Good
             </Link>
           </div>
         </nav>

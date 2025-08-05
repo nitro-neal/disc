@@ -7,13 +7,6 @@ function Home() {
 
   const menuItems = [
     {
-      title: 'Disc Search',
-      description: 'Find discs by name, brand, or type',
-      path: '/',
-      icon: '🥏',
-      action: 'search'
-    },
-    {
       title: 'Brand Search',
       description: 'Browse discs by manufacturer',
       path: '/brand',
@@ -26,6 +19,12 @@ function Home() {
       icon: '📈'
     },
     {
+      title: 'Get Good',
+      description: 'Learn how to improve your disc golf game',
+      path: '/get-good',
+      icon: '🏆'
+    },
+    {
       title: 'My Bags',
       description: 'Build and manage your disc bags',
       path: '/bags',
@@ -33,13 +32,7 @@ function Home() {
     }
   ];
 
-  const scrollToSearch = () => {
-    const searchInput = document.querySelector('.search-input');
-    if (searchInput) {
-      searchInput.focus();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
+
 
   return (
     <div className="home">
@@ -59,49 +52,20 @@ function Home() {
               <p>Loading disc database...</p>
             </div>
           )}
-          
-          {!state.loading && (
-            <div className="hero-stats">
-              <div className="stat">
-                <span className="stat-number">{state.discs.length.toLocaleString()}</span>
-                <span className="stat-label">Discs</span>
-              </div>
-              <div className="stat">
-                <span className="stat-number">{new Set(state.discs.map(d => d.brand)).size}</span>
-                <span className="stat-label">Brands</span>
-              </div>
-              <div className="stat">
-                <span className="stat-number">{state.bags.length}</span>
-                <span className="stat-label">Your Bags</span>
-              </div>
-            </div>
-          )}
         </section>
 
         {/* Main Menu Grid */}
         <section className="menu-grid">
           {menuItems.map((item, index) => (
-            item.action === 'search' ? (
-              <button
-                key={index}
-                onClick={scrollToSearch}
-                className="menu-card menu-card-button"
-              >
-                <div className="menu-card-icon">{item.icon}</div>
-                <h3 className="menu-card-title">{item.title}</h3>
-                <p className="menu-card-description">{item.description}</p>
-              </button>
-            ) : (
-              <Link
-                key={index}
-                to={item.path}
-                className="menu-card"
-              >
-                <div className="menu-card-icon">{item.icon}</div>
-                <h3 className="menu-card-title">{item.title}</h3>
-                <p className="menu-card-description">{item.description}</p>
-              </Link>
-            )
+            <Link
+              key={index}
+              to={item.path}
+              className="menu-card"
+            >
+              <div className="menu-card-icon">{item.icon}</div>
+              <h3 className="menu-card-title">{item.title}</h3>
+              <p className="menu-card-description">{item.description}</p>
+            </Link>
           ))}
         </section>
 

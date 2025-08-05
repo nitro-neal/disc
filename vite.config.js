@@ -5,6 +5,16 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ command }) => {
   const config = {
     plugins: [react()],
+    server: {
+      host: true,
+      hmr: {
+        overlay: true
+      },
+      watch: {
+        usePolling: true,
+        interval: 100
+      }
+    },
     build: {
       outDir: 'dist',
       assetsDir: 'assets',

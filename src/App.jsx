@@ -9,6 +9,7 @@ import FlightSearch from './pages/FlightSearch';
 import BagsDashboard from './pages/BagsDashboard';
 import BagEditor from './pages/BagEditor';
 import BagReport from './pages/BagReport';
+import GetGood from './pages/GetGood';
 import './App.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/bags" element={<BagsDashboard />} />
             <Route path="/bag/:id" element={<BagEditor />} />
             <Route path="/bag/:id/report" element={<BagReport />} />
+            <Route path="/get-good" element={<GetGood />} />
           </Routes>
         </AppShell>
       </Router>
