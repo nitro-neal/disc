@@ -13,16 +13,16 @@ localforage.config({
 export async function loadDiscs() {
   try {
     // Check if we have cached data that's still valid
-    const cacheExpiry = await localforage.getItem(CACHE_EXPIRY_KEY);
-    const now = Date.now();
+    // const cacheExpiry = await localforage.getItem(CACHE_EXPIRY_KEY);
+    // const now = Date.now();
     
-    if (cacheExpiry && now < cacheExpiry) {
-      const cachedDiscs = await localforage.getItem(CACHE_KEY);
-      if (cachedDiscs) {
-        console.log('Using cached disc data');
-        return cachedDiscs;
-      }
-    }
+    // if (cacheExpiry && now < cacheExpiry) {
+    //   const cachedDiscs = await localforage.getItem(CACHE_KEY);
+    //   if (cachedDiscs) {
+    //     console.log('Using cached disc data');
+    //     return cachedDiscs;
+    //   }
+    // }
 
     // Load fresh data from the JSON file
     console.log('Loading fresh disc data');
@@ -36,8 +36,9 @@ export async function loadDiscs() {
     const discs = await response.json();
     
     // Cache the data
-    await localforage.setItem(CACHE_KEY, discs);
-    await localforage.setItem(CACHE_EXPIRY_KEY, now + CACHE_DURATION);
+    // await localforage.setItem(CACHE_KEY, discs);
+    // const now = Date.now();
+    // await localforage.setItem(CACHE_EXPIRY_KEY, now + CACHE_DURATION);
     
     console.log(`Loaded ${discs.length} discs`);
     return discs;
@@ -46,11 +47,11 @@ export async function loadDiscs() {
     console.error('Error loading discs:', error);
     
     // Try to fall back to cached data even if expired
-    const cachedDiscs = await localforage.getItem(CACHE_KEY);
-    if (cachedDiscs) {
-      console.log('Using expired cached data as fallback');
-      return cachedDiscs;
-    }
+    // const cachedDiscs = await localforage.getItem(CACHE_KEY);
+    // if (cachedDiscs) {
+    //   console.log('Using expired cached data as fallback');
+    //   return cachedDiscs;
+    // }
     
     throw error;
   }
