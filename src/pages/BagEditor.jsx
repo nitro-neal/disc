@@ -17,6 +17,11 @@ function BagEditor() {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
+  // Scroll to top when component mounts or id changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   // Find the bag
   useEffect(() => {
     const foundBag = state.bags.find(b => b.id === id);
@@ -112,6 +117,30 @@ function BagEditor() {
 
   const availableCategories = Array.from(new Set(state.discs.map(d => d.category))).sort();
 
+  // Helper functions for disc styling
+  const getStabilityColor = (stability) => {
+    switch (stability?.toLowerCase()) {
+      case 'very overstable': return 'var(--color-error)';
+      case 'overstable': return '#f59e0b';
+      case 'stable': return 'var(--color-success)';
+      case 'understable': return '#3b82f6';
+      case 'very understable': return '#8b5cf6';
+      default: return 'var(--color-secondary)';
+    }
+  };
+
+  const getCategoryBadgeColor = (category) => {
+    switch (category?.toLowerCase()) {
+      case 'putter': return '#10b981';
+      case 'approach discs': return '#f59e0b';
+      case 'midrange': return '#3b82f6';
+      case 'control driver': return '#8b5cf6';
+      case 'hybrid driver': return '#ef4444';
+      case 'distance driver': return '#dc2626';
+      default: return 'var(--color-secondary)';
+    }
+  };
+
   return (
     <div className="bag-editor">
       <div className="container">
@@ -127,21 +156,21 @@ function BagEditor() {
               <span className="bag-stat">{bag.discs?.length || 0} discs</span>
               <span className="bag-stat">{categories.length} categories</span>
             </div>
+            <Link 
+              to={`/bag/${bag.id}/report`} 
+              className="btn-primary view-report-btn"
+            >
+              📊 View Report
+            </Link>
           </div>
           
           <div className="bag-actions">
             <button 
               onClick={() => setShowAddModal(true)}
-              className="btn-primary"
+              className="btn-outline add-disc-desktop"
             >
               + Add Disc
             </button>
-            <Link 
-              to={`/bag/${bag.id}/report`} 
-              className="btn-outline"
-            >
-              View Report
-            </Link>
           </div>
         </div>
 
@@ -188,6 +217,15 @@ function BagEditor() {
           )}
         </div>
 
+        {/* Mobile Floating Add Button */}
+        <button 
+          onClick={() => setShowAddModal(true)}
+          className="floating-add-btn"
+          title="Add Disc"
+        >
+          + Add Disc
+        </button>
+
         {/* Add Disc Modal */}
         {showAddModal && (
           <Modal
@@ -225,7 +263,56 @@ function BagEditor() {
                   <div className="search-results-list">
                     {filteredResults.map(disc => (
                       <div key={disc.id} className="search-result-item">
-                        <DiscRow disc={disc} />
+                        <button
+                          onClick={() => window.open(`/disc/${disc.name_slug}`, '_blank')}
+                          className="details-btn"
+                          title="View disc details"
+                        >
+                          Details
+                        </button>
+                        <div className="disc-row-content">
+                          <div className="disc-row-image">
+                            <div
+                              className="disc-placeholder-small"
+                              style={{
+                                backgroundColor: getCategoryBadgeColor(disc.category),
+                                color: 'white'
+                              }}
+                            >
+                              {disc.name.charAt(0)}
+                            </div>
+                          </div>
+
+                          <div className="disc-row-info">
+                            <div className="disc-row-header">
+                              <h3 className="disc-row-name">{disc.name}</h3>
+                              <span className="disc-brand">{disc.brand}</span>
+                            </div>
+                            
+                            <div className="disc-row-meta">
+                              <span className="disc-category">{disc.category}</span>
+                              <span className="disc-separator">•</span>
+                              <span 
+                                className="disc-stability"
+                                style={{ color: getStabilityColor(disc.stability) }}
+                              >
+                                {disc.stability}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="disc-row-numbers">
+                            <div className="flight-numbers">
+                              <span className="flight-number" title="Speed">{disc.speed}</span>
+                              <span className="flight-separator">|</span>
+                              <span className="flight-number" title="Glide">{disc.glide}</span>
+                              <span className="flight-separator">|</span>
+                              <span className="flight-number" title="Turn">{disc.turn}</span>
+                              <span className="flight-separator">|</span>
+                              <span className="flight-number" title="Fade">{disc.fade}</span>
+                            </div>
+                          </div>
+                        </div>
                         <button
                           onClick={() => addDiscToBag(disc)}
                           className="add-disc-btn"

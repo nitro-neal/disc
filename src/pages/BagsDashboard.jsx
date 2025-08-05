@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,6 +11,11 @@ function BagsDashboard() {
   const [showDeleteModal, setShowDeleteModal] = useState(null);
   const [bagName, setBagName] = useState('');
   const [bagDescription, setBagDescription] = useState('');
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleCreateBag = (e) => {
     e.preventDefault();

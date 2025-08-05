@@ -29,6 +29,57 @@
   font-size: 10px;
   font-weight: 500;
   cursor: help;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: var(--spacing-lg);
+}
+
+.mobile-tooltip-content {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xl);
+  max-width: 350px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.mobile-tooltip-close {
+  position: absolute;
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.mobile-tooltip-close:hover {
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
 .range-slider-values {
@@ -55,7 +106,7 @@
 
 .range-slider-container {
   position: relative;
-  padding: var(--spacing-lg) 0 var(--spacing-xl) 0;
+  padding: var(--spacing-lg) 0 calc(var(--spacing-xl) + 16px) 0;
 }
 
 .range-slider-track {
@@ -95,6 +146,10 @@
   cursor: grab;
   transition: all 0.1s ease;
   box-shadow: var(--shadow);
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .range-slider-thumb:hover,
@@ -137,7 +192,8 @@
   top: 100%;
   left: 0;
   right: 0;
-  height: 20px;
+  height: 32px;
+  margin-top: 6px;
 }
 
 .range-slider-tick {
@@ -150,6 +206,18 @@
   font-size: 0.75rem;
   color: #9ca3af;
   font-family: 'Monaco', 'Menlo', monospace;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Styles for sliders with many values (like speed 1-15) */
+.range-slider.large-range .range-slider-tick-label {
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+
+.range-slider.large-range .range-slider-scale {
+  height: 36px;
 }
 
 /* Focus styles for accessibility */
@@ -190,11 +258,25 @@ body.dark-mode .range-slider-tick-label {
   color: #6b7280;
 }
 
+body.dark-mode .mobile-tooltip-content {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .mobile-tooltip-close {
+  color: #9ca3af;
+}
+
+body.dark-mode .mobile-tooltip-close:hover {
+  background-color: #374151;
+  color: #f1f5f9;
+}
+
 /* Mobile adjustments */
 @media (max-width: 640px) {
   .range-slider-thumb {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
   }
   
   .range-slider-thumb-value {
@@ -209,5 +291,17 @@ body.dark-mode .range-slider-tick-label {
   .range-value {
     min-width: 20px;
     font-size: 0.75rem;
+  }
+  
+  .range-slider-track {
+    height: 8px;
+  }
+  
+  .range-slider-container {
+    padding: var(--spacing-lg) 0 calc(var(--spacing-xl) + 16px) 0;
+  }
+  
+  .range-slider.large-range .range-slider-tick-label {
+    font-size: 0.625rem;
   }
 }

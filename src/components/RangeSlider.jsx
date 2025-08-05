@@ -3,6 +3,7 @@ import './RangeSlider.css';
 
 function RangeSlider({ label, min, max, value, onChange, tooltip }) {
   const [isDragging, setIsDragging] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
   const sliderRef = useRef(null);
 
   const getValueFromPosition = useCallback((clientX) => {
@@ -16,12 +17,15 @@ function RangeSlider({ label, min, max, value, onChange, tooltip }) {
     return Math.round(rawValue);
   }, [min, max]);
 
-  const handleMouseDown = (thumbIndex) => (e) => {
+  const handlePointerDown = (thumbIndex) => (e) => {
     e.preventDefault();
     setIsDragging(thumbIndex);
     
-    const handleMouseMove = (e) => {
-      const newValue = getValueFromPosition(e.clientX);
+    const handlePointerMove = (e) => {
+      const clientX = e.clientX || (e.touches && e.touches[0]?.clientX);
+      if (!clientX) return;
+      
+      const newValue = getValueFromPosition(clientX);
       const newRange = [...value];
       
       if (thumbIndex === 0) {
@@ -35,14 +39,18 @@ function RangeSlider({ label, min, max, value, onChange, tooltip }) {
       onChange(newRange);
     };
     
-    const handleMouseUp = () => {
+    const handlePointerUp = () => {
       setIsDragging(null);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handlePointerMove);
+      document.removeEventListener('mouseup', handlePointerUp);
+      document.removeEventListener('touchmove', handlePointerMove);
+      document.removeEventListener('touchend', handlePointerUp);
     };
     
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', handlePointerMove);
+    document.addEventListener('mouseup', handlePointerUp);
+    document.addEventListener('touchmove', handlePointerMove, { passive: false });
+    document.addEventListener('touchend', handlePointerUp);
   };
 
   const handleTrackClick = (e) => {
@@ -65,12 +73,24 @@ function RangeSlider({ label, min, max, value, onChange, tooltip }) {
   const leftPercent = getPercentage(value[0]);
   const rightPercent = getPercentage(value[1]);
 
+  const rangeSize = max - min + 1;
+  const isLargeRange = rangeSize > 10;
+
   return (
-    <div className="range-slider">
+    <div className={`range-slider ${isLargeRange ? 'large-range' : ''}`}>
       <div className="range-slider-header">
         <label className="range-slider-label">
           {label}
-          {tooltip && <span className="range-slider-tooltip" title={tooltip}>?</span>}
+          {tooltip && (
+            <span 
+              className="range-slider-tooltip" 
+              title={tooltip}
+              onClick={() => setShowTooltip(!showTooltip)}
+              onTouchStart={() => setShowTooltip(!showTooltip)}
+            >
+              ?
+            </span>
+          )}
         </label>
         <div className="range-slider-values">
           <span className="range-value">{value[0]}</span>
@@ -78,6 +98,22 @@ function RangeSlider({ label, min, max, value, onChange, tooltip }) {
           <span className="range-value">{value[1]}</span>
         </div>
       </div>
+      
+      {/* Mobile tooltip popup */}
+      {showTooltip && tooltip && (
+        <div className="mobile-tooltip">
+          <div className="mobile-tooltip-content">
+            {tooltip}
+            <button 
+              className="mobile-tooltip-close"
+              onClick={() => setShowTooltip(false)}
+              onTouchStart={() => setShowTooltip(false)}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
       
       <div className="range-slider-container">
         <div 
@@ -101,7 +137,8 @@ function RangeSlider({ label, min, max, value, onChange, tooltip }) {
           <div
             className={`range-slider-thumb ${isDragging === 0 ? 'dragging' : ''}`}
             style={{ left: `${leftPercent}%` }}
-            onMouseDown={handleMouseDown(0)}
+            onMouseDown={handlePointerDown(0)}
+            onTouchStart={handlePointerDown(0)}
             role="slider"
             aria-label={`${label} minimum`}
             aria-valuemin={min}
@@ -116,7 +153,8 @@ function RangeSlider({ label, min, max, value, onChange, tooltip }) {
           <div
             className={`range-slider-thumb ${isDragging === 1 ? 'dragging' : ''}`}
             style={{ left: `${rightPercent}%` }}
-            onMouseDown={handleMouseDown(1)}
+            onMouseDown={handlePointerDown(1)}
+            onTouchStart={handlePointerDown(1)}
             role="slider"
             aria-label={`${label} maximum`}
             aria-valuemin={min}
@@ -130,8 +168,8 @@ function RangeSlider({ label, min, max, value, onChange, tooltip }) {
         
         {/* Scale marks */}
         <div className="range-slider-scale">
-          {Array.from({ length: Math.min(max - min + 1, 11) }, (_, i) => {
-            const val = min + Math.round((i * (max - min)) / Math.min(max - min, 10));
+          {Array.from({ length: max - min + 1 }, (_, i) => {
+            const val = min + i;
             return (
               <div 
                 key={val}

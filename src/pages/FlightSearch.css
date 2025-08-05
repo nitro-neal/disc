@@ -14,7 +14,7 @@
 .flight-sliders {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
 
@@ -22,6 +22,27 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-xl);
+}
+
+.slider-row + .slider-row {
+  margin-top: 0;
+}
+
+.slider-container {
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: var(--spacing-lg);
+  border: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+}
+
+.slider-container:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: #e5e7eb;
 }
 
 .flight-controls-footer {
@@ -46,6 +67,12 @@
   font-weight: 600;
   color: var(--color-primary);
   font-size: 1rem;
+}
+
+.pagination-info {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin-left: var(--spacing-xs);
 }
 
 /* Results */
@@ -81,10 +108,32 @@
   line-height: 1.6;
 }
 
-/* Virtual scrolling for many results */
-.results-list {
-  max-height: 800px;
-  overflow-y: auto;
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.pagination-btn {
+  min-width: 100px;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-info-detailed {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
 }
 
 .results-list::-webkit-scrollbar {
@@ -136,6 +185,23 @@ body.dark-mode .no-results p {
   color: #9ca3af;
 }
 
+body.dark-mode .pagination-controls {
+  background-color: #1e293b;
+}
+
+body.dark-mode .pagination-info-detailed {
+  color: #f1f5f9;
+}
+
+body.dark-mode .slider-container {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .slider-container:hover {
+  border-color: #475569;
+}
+
 body.dark-mode .results-list::-webkit-scrollbar-track {
   background: #374151;
 }
@@ -181,5 +247,18 @@ body.dark-mode .results-list::-webkit-scrollbar-thumb:hover {
   
   .slider-row {
     gap: var(--spacing-md);
+  }
+  
+  .pagination-controls {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .pagination-btn {
+    min-width: 80px;
+  }
+  
+  .slider-container {
+    padding: var(--spacing-md);
   }
 }

@@ -6,15 +6,25 @@ import DiscRow from '../components/DiscRow';
 import RangeSlider from '../components/RangeSlider';
 import './FlightSearch.css';
 
+const PAGE_SIZE = 100;
+
 function FlightSearch() {
   const { state } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
+  
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   // Flight number ranges
   const [speed, setSpeed] = useState([1, 15]);
   const [glide, setGlide] = useState([1, 7]);
   const [turn, setTurn] = useState([-5, 1]);
   const [fade, setFade] = useState([0, 5]);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Initialize from URL params
   useEffect(() => {
@@ -68,7 +78,7 @@ function FlightSearch() {
   }, [speed, glide, turn, fade, setSearchParams]);
 
   // Search results
-  const results = useMemo(() => {
+  const allResults = useMemo(() => {
     if (state.discs.length === 0) return [];
 
     const filters = {
@@ -81,11 +91,23 @@ function FlightSearch() {
     return searchByFlightNumbers(state.discs, filters);
   }, [state.discs, speed, glide, turn, fade]);
 
+  // Pagination calculations
+  const totalPages = Math.ceil(allResults.length / PAGE_SIZE);
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+  const paginatedResults = allResults.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [speed, glide, turn, fade]);
+
   const resetFilters = () => {
     setSpeed([1, 15]);
     setGlide([1, 7]);
     setTurn([-5, 1]);
     setFade([0, 5]);
+    setCurrentPage(1);
   };
 
   const hasActiveFilters = () => {
@@ -118,46 +140,59 @@ function FlightSearch() {
         <div className="flight-controls">
           <div className="flight-sliders">
             <div className="slider-row">
-              <RangeSlider
-                label="Speed"
-                min={1}
-                max={15}
-                value={speed}
-                onChange={setSpeed}
-                tooltip="How fast the disc flies through the air"
-              />
-              <RangeSlider
-                label="Glide"
-                min={1}
-                max={7}
-                value={glide}
-                onChange={setGlide}
-                tooltip="How well the disc maintains loft during flight"
-              />
+              <div className="slider-container">
+                <RangeSlider
+                  label="Speed"
+                  min={1}
+                  max={15}
+                  value={speed}
+                  onChange={setSpeed}
+                  tooltip="Speed (1-15): How fast the disc needs to be thrown to fly properly. Higher numbers require more arm speed. Putters are typically 1-4, midranges 4-6, fairways 6-9, and drivers 9-15."
+                />
+              </div>
+              <div className="slider-container">
+                <RangeSlider
+                  label="Glide"
+                  min={1}
+                  max={7}
+                  value={glide}
+                  onChange={setGlide}
+                  tooltip="Glide (1-7): How well the disc maintains loft and stays in the air. Higher glide means the disc will fly farther with less effort. Great for beginners and maximizing distance."
+                />
+              </div>
             </div>
             <div className="slider-row">
-              <RangeSlider
-                label="Turn"
-                min={-5}
-                max={1}
-                value={turn}
-                onChange={setTurn}
-                tooltip="Initial flight path tendency (negative = right turn for RHBH)"
-              />
-              <RangeSlider
-                label="Fade"
-                min={0}
-                max={5}
-                value={fade}
-                onChange={setFade}
-                tooltip="End flight path tendency (positive = left hook for RHBH)"
-              />
+              <div className="slider-container">
+                <RangeSlider
+                  label="Turn"
+                  min={-5}
+                  max={1}
+                  value={turn}
+                  onChange={setTurn}
+                  tooltip="Turn (-5 to +1): The disc's tendency to turn right during the first part of flight (for RHBH throws). Negative numbers turn right more, positive numbers are more stable. Understable discs have more negative turn."
+                />
+              </div>
+              <div className="slider-container">
+                <RangeSlider
+                  label="Fade"
+                  min={0}
+                  max={5}
+                  value={fade}
+                  onChange={setFade}
+                  tooltip="Fade (0-5): How much the disc hooks left at the end of flight (for RHBH throws). Higher numbers mean a harder left finish. Essential for reliable landing zones and fighting wind."
+                />
+              </div>
             </div>
           </div>
 
           <div className="flight-controls-footer">
             <div className="results-info">
-              <span className="results-count">{results.length}</span> discs found
+              <span className="results-count">{allResults.length}</span> discs found
+              {allResults.length > PAGE_SIZE && (
+                <span className="pagination-info">
+                  (showing {startIndex + 1}-{Math.min(endIndex, allResults.length)})
+                </span>
+              )}
             </div>
             {hasActiveFilters() && (
               <button onClick={resetFilters} className="btn-outline">
@@ -169,12 +204,39 @@ function FlightSearch() {
 
         {/* Results */}
         <div className="flight-results">
-          {results.length > 0 ? (
-            <div className="results-list">
-              {results.map(disc => (
-                <DiscRow key={disc.id} disc={disc} />
-              ))}
-            </div>
+          {allResults.length > 0 ? (
+            <>
+              <div className="results-list">
+                {paginatedResults.map(disc => (
+                  <DiscRow key={disc.id} disc={disc} />
+                ))}
+              </div>
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="pagination-controls">
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="btn-outline pagination-btn"
+                  >
+                    Previous
+                  </button>
+                  
+                  <div className="pagination-info-detailed">
+                    Page {currentPage} of {totalPages}
+                  </div>
+                  
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="btn-outline pagination-btn"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="no-results">
               {hasActiveFilters() ? (
