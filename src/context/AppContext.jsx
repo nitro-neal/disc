@@ -10,9 +10,7 @@ const initialState = {
   loading: true,
   error: null,
   searchQuery: '',
-  settings: {
-    theme: 'light'
-  }
+  settings: JSON.parse(localStorage.getItem('dg-settings') || '{"theme":"dark"}')
 };
 
 // Action types
@@ -87,6 +85,13 @@ export function ContextProvider({ children }) {
     }
     loadData();
   }, []);
+
+  // Apply theme to body
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.classList.toggle('dark-mode', state.settings.theme === 'dark');
+    }
+  }, [state.settings.theme]);
 
   // Action creators
   const actions = {

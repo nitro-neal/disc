@@ -74,6 +74,29 @@
   padding: var(--spacing-lg);
 }
 
+/* Dark mode styles */
+body.dark-mode .modal {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .modal-header {
+  border-bottom-color: #334155;
+}
+
+body.dark-mode .modal-title {
+  color: #f1f5f9;
+}
+
+body.dark-mode .modal-close {
+  color: #9ca3af;
+}
+
+body.dark-mode .modal-close:hover {
+  background-color: #4b5563;
+  color: #d1d5db;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 640px) {
   .modal-backdrop {

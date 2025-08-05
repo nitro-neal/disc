@@ -356,6 +356,141 @@
   font-family: 'Monaco', 'Menlo', monospace;
 }
 
+/* Dark mode styles */
+body.dark-mode .report-header {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .back-link {
+  color: #93c5fd;
+}
+
+body.dark-mode .back-link:hover {
+  color: #60a5fa;
+}
+
+body.dark-mode .report-title {
+  color: #f1f5f9;
+}
+
+body.dark-mode .report-description {
+  color: #9ca3af;
+}
+
+body.dark-mode .summary-card {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .summary-value {
+  color: #93c5fd;
+}
+
+body.dark-mode .summary-label {
+  color: #9ca3af;
+}
+
+body.dark-mode .flight-chart-container {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .flight-chart-container h2 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .chart-description {
+  color: #9ca3af;
+}
+
+body.dark-mode .speed-label,
+body.dark-mode .turn-fade-label {
+  color: #9ca3af;
+}
+
+body.dark-mode .flight-grid {
+  background-color: #4b5563;
+  border-color: #4b5563;
+}
+
+body.dark-mode .flight-cell {
+  background-color: #374151;
+}
+
+body.dark-mode .flight-cell:hover {
+  background-color: #4b5563;
+}
+
+body.dark-mode .chart-legend {
+  border-top-color: #4b5563;
+  color: #9ca3af;
+}
+
+body.dark-mode .category-breakdown {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .category-breakdown h2 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .category-card {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+body.dark-mode .category-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .disc-name {
+  color: #d1d5db;
+}
+
+body.dark-mode .disc-numbers {
+  color: #9ca3af;
+}
+
+body.dark-mode .category-more {
+  color: #6b7280;
+}
+
+body.dark-mode .coverage-analysis {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .coverage-analysis h2 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .coverage-card {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+body.dark-mode .coverage-card h4 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .coverage-card p {
+  color: #9ca3af;
+}
+
+body.dark-mode .stability-name {
+  color: #d1d5db;
+}
+
+body.dark-mode .stability-progress {
+  background-color: #4b5563;
+}
+
+body.dark-mode .stability-count {
+  color: #9ca3af;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .report-title {

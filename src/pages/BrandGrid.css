@@ -92,6 +92,32 @@
   font-size: 0.875rem;
 }
 
+/* Dark mode styles */
+body.dark-mode .page-header h1 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .page-header p {
+  color: #9ca3af;
+}
+
+body.dark-mode .brand-card {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .brand-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .brand-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .brand-count {
+  color: #9ca3af;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 640px) {
   .page-header h1 {

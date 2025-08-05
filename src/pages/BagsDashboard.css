@@ -245,6 +245,82 @@
   background-color: #dc2626;
 }
 
+/* Dark mode styles */
+body.dark-mode .empty-state {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .empty-state h3 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .empty-state p {
+  color: #9ca3af;
+}
+
+body.dark-mode .bag-card {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .bag-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .bag-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .bag-name:hover {
+  color: #93c5fd;
+}
+
+body.dark-mode .bag-action-btn:hover {
+  background-color: #4b5563;
+}
+
+body.dark-mode .delete-btn:hover {
+  background-color: #991b1b;
+}
+
+body.dark-mode .bag-description {
+  color: #9ca3af;
+}
+
+body.dark-mode .bag-stats {
+  border-top-color: #334155;
+  border-bottom-color: #334155;
+}
+
+body.dark-mode .stat-value {
+  color: #93c5fd;
+}
+
+body.dark-mode .stat-label {
+  color: #9ca3af;
+}
+
+body.dark-mode .bag-updated {
+  color: #6b7280;
+}
+
+body.dark-mode .edit-bag-link {
+  color: #93c5fd;
+}
+
+body.dark-mode .edit-bag-link:hover {
+  color: #60a5fa;
+}
+
+body.dark-mode .form-group label {
+  color: #f1f5f9;
+}
+
+body.dark-mode .delete-confirmation p {
+  color: #f1f5f9;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .page-header {

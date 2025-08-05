@@ -105,6 +105,49 @@
   background: #94a3b8;
 }
 
+/* Dark mode styles */
+body.dark-mode .flight-controls {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .flight-controls-footer {
+  border-top-color: #334155;
+}
+
+body.dark-mode .results-info {
+  color: #9ca3af;
+}
+
+body.dark-mode .results-count {
+  color: #93c5fd;
+}
+
+body.dark-mode .no-results {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .no-results h3 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .no-results p {
+  color: #9ca3af;
+}
+
+body.dark-mode .results-list::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+body.dark-mode .results-list::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+body.dark-mode .results-list::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .slider-row {

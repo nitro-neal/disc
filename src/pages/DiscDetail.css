@@ -224,6 +224,79 @@
   font-family: 'Monaco', 'Menlo', monospace;
 }
 
+/* Dark mode styles */
+body.dark-mode .error-page h1 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .error-page p {
+  color: #9ca3af;
+}
+
+body.dark-mode .disc-brand {
+  color: #93c5fd;
+}
+
+body.dark-mode .disc-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .number {
+  background-color: #374151;
+  color: #d1d5db;
+}
+
+body.dark-mode .disc-stability {
+  color: #d1d5db;
+}
+
+body.dark-mode .disc-specs {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .disc-specs h2 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .spec-label {
+  color: #9ca3af;
+}
+
+body.dark-mode .spec-value {
+  color: #f1f5f9;
+}
+
+body.dark-mode .similar-discs {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .similar-discs h2 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .similar-disc-card {
+  border-color: #4b5563;
+  background-color: #374151;
+}
+
+body.dark-mode .similar-disc-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .similar-disc-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .similar-disc-brand {
+  color: #9ca3af;
+}
+
+body.dark-mode .similar-disc-numbers {
+  color: #6b7280;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .disc-header {

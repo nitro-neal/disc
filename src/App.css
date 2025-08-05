@@ -275,3 +275,185 @@ input:focus, select:focus, textarea:focus {
     gap: var(--spacing-sm);
   }
 }
+
+/* Dark mode styles */
+body.dark-mode {
+  color: #f1f5f9;
+  background-color: #0f172a;
+}
+
+body.dark-mode a {
+  color: #93c5fd;
+}
+
+body.dark-mode .card {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .app-header {
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
+}
+
+body.dark-mode .desktop-nav .nav-link,
+body.dark-mode .mobile-nav-link {
+  color: #cbd5e1;
+}
+
+body.dark-mode .nav-link.active,
+body.dark-mode .mobile-nav-link.active {
+  background-color: #1e40af;
+  color: #93c5fd;
+}
+
+body.dark-mode .nav-link:hover,
+body.dark-mode .mobile-nav-link:hover {
+  background-color: #334155;
+}
+
+body.dark-mode .mobile-nav {
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
+}
+
+body.dark-mode .app-footer {
+  background-color: #0f172a;
+  border-top: 1px solid #334155;
+  color: #94a3b8;
+}
+
+body.dark-mode .footer-links a {
+  color: #94a3b8;
+}
+
+body.dark-mode .footer-links a:hover {
+  color: #93c5fd;
+}
+
+/* Theme Toggle Switch */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle-label {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.theme-toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.theme-toggle-slider::before {
+  content: '';
+  position: absolute;
+  height: 28px;
+  width: 28px;
+  background-color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.theme-toggle-input:checked + .theme-toggle-slider {
+  background-color: #3b82f6;
+}
+
+.theme-toggle-input:checked + .theme-toggle-slider::before {
+  transform: translateX(28px);
+}
+
+.theme-toggle-icon {
+  position: absolute;
+  font-size: 16px;
+  line-height: 1;
+  transition: all 0.3s ease;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-input:not(:checked) + .theme-toggle-slider .theme-toggle-icon {
+  left: 2px;
+}
+
+.theme-toggle-input:checked + .theme-toggle-slider .theme-toggle-icon {
+  right: 2px;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .theme-toggle-slider {
+  background-color: #4b5563;
+}
+
+body.dark-mode .theme-toggle-input:checked + .theme-toggle-slider {
+  background-color: #60a5fa;
+}
+
+body.dark-mode .theme-toggle-slider::before {
+  background-color: #1f2937;
+}
+
+/* Dark mode form elements */
+body.dark-mode input, 
+body.dark-mode select, 
+body.dark-mode textarea {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f1f5f9;
+}
+
+body.dark-mode input:focus, 
+body.dark-mode select:focus, 
+body.dark-mode textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+body.dark-mode input::placeholder, 
+body.dark-mode textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Dark mode buttons */
+body.dark-mode .btn-outline {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background-color: transparent;
+}
+
+body.dark-mode .btn-outline:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* Dark mode text colors */
+body.dark-mode .text-gray {
+  color: #9ca3af;
+}

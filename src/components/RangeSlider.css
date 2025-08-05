@@ -158,6 +158,38 @@
   outline-offset: 2px;
 }
 
+/* Dark mode styles */
+body.dark-mode .range-slider-label {
+  color: #f1f5f9;
+}
+
+body.dark-mode .range-slider-tooltip {
+  background-color: #4b5563;
+  color: #d1d5db;
+}
+
+body.dark-mode .range-value {
+  background-color: #4b5563;
+  color: #93c5fd;
+}
+
+body.dark-mode .range-separator {
+  color: #6b7280;
+}
+
+body.dark-mode .range-slider-track-bg {
+  background-color: #4b5563;
+}
+
+body.dark-mode .range-slider-thumb {
+  background-color: #1e293b;
+  border-color: var(--color-primary);
+}
+
+body.dark-mode .range-slider-tick-label {
+  color: #6b7280;
+}
+
 /* Mobile adjustments */
 @media (max-width: 640px) {
   .range-slider-thumb {

@@ -1,10 +1,17 @@
 import { useState } from 'react';
+import { useApp } from '../context/AppContext';
 import { Link, useLocation } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import './AppShell.css';
 
 function AppShell({ children }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { state, actions } = useApp();
+
+  const toggleTheme = () => {
+    const newTheme = state.settings.theme === 'dark' ? 'light' : 'dark';
+    actions.updateSettings({ theme: newTheme });
+  };
   const location = useLocation();
 
   const isActive = (path) => {
@@ -58,6 +65,23 @@ function AppShell({ children }) {
                 My Bags
               </Link>
             </nav>
+            <div className="theme-toggle">
+              <label className="theme-toggle-label" htmlFor="theme-switch">
+                <input
+                  type="checkbox"
+                  id="theme-switch"
+                  className="theme-toggle-input"
+                  checked={state.settings.theme === 'dark'}
+                  onChange={toggleTheme}
+                  aria-label="Toggle dark mode"
+                />
+                <span className="theme-toggle-slider">
+                  <span className="theme-toggle-icon">
+                    {state.settings.theme === 'dark' ? '🌙' : '☀️'}
+                  </span>
+                </span>
+              </label>
+            </div>
 
             <button 
               className="mobile-menu-btn"

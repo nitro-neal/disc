@@ -19,6 +19,13 @@
   color: #1f2937;
 }
 
+/* When dropdown is open, remove bottom radius & border to seamlessly connect */
+.search-input[aria-expanded="true"] {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
+}
+
 .search-input:focus {
   background-color: white;
   border-color: var(--color-primary);
@@ -136,6 +143,62 @@
   padding: var(--spacing-lg);
   text-align: center;
   color: #6b7280;
+}
+
+/* Dark mode styles */
+body.dark-mode .search-input {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f1f5f9;
+}
+
+body.dark-mode .search-input:focus {
+  background-color: #4b5563;
+  border-color: var(--color-primary);
+}
+
+body.dark-mode .search-clear {
+  color: #9ca3af;
+}
+
+body.dark-mode .search-clear:hover {
+  background-color: #4b5563;
+  color: #d1d5db;
+}
+
+body.dark-mode .search-results {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+body.dark-mode .search-result {
+  border-bottom-color: #4b5563;
+}
+
+body.dark-mode .search-result:hover,
+body.dark-mode .search-result.selected {
+  background-color: #4b5563;
+}
+
+body.dark-mode .search-result-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .search-result-brand {
+  color: #9ca3af;
+}
+
+body.dark-mode .search-result-numbers {
+  color: #6b7280;
+}
+
+body.dark-mode .search-highlight {
+  background-color: #374151;
+  color: #fbbf24;
+}
+
+body.dark-mode .search-no-results {
+  color: #9ca3af;
 }
 
 /* Mobile adjustments */
