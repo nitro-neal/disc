@@ -39,40 +39,25 @@
 
 .disc-row-header {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
+  align-items: baseline;
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-xs);
   flex-wrap: wrap;
 }
 
 .disc-row-name {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: #1f2937;
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   flex: 1;
   min-width: 0;
-}
-
-.category-badge {
-  background-color: var(--color-primary);
-  color: white;
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 2px 8px;
-  border-radius: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
 }
 
 .disc-row-meta {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   flex-wrap: wrap;
 }
 
@@ -80,6 +65,22 @@
   color: #6b7280;
   font-size: 0.875rem;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.25px;
+}
+
+.disc-category {
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25px;
+}
+
+.disc-separator {
+  color: #9ca3af;
+  font-weight: 300;
+  font-size: 0.875rem;
 }
 
 .disc-stability {
@@ -146,6 +147,14 @@ body.dark-mode .disc-brand {
   color: #9ca3af;
 }
 
+body.dark-mode .disc-category {
+  color: #d1d5db;
+}
+
+body.dark-mode .disc-separator {
+  color: #6b7280;
+}
+
 body.dark-mode .disc-stability {
   color: #d1d5db;
 }
@@ -188,10 +197,7 @@ body.dark-mode .disc-row-arrow {
     white-space: normal;
     overflow: visible;
     text-overflow: initial;
-  }
-  
-  .category-badge {
-    align-self: flex-start;
+    font-size: 1.125rem;
   }
   
   .disc-row-meta {

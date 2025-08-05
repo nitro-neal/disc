@@ -57,31 +57,53 @@
   color: var(--color-primary);
   font-weight: 600;
   font-size: 1.125rem;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
 }
 
 .disc-name {
   color: #1f2937;
   font-size: 3rem;
   font-weight: 800;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
   line-height: 1.1;
 }
 
-.disc-numbers {
-  display: flex;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-md);
-  flex-wrap: wrap;
+.disc-separator {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: var(--spacing-lg) 0;
+  width: 100%;
 }
 
-.number {
-  background-color: #f3f4f6;
-  padding: var(--spacing-sm) var(--spacing-md);
+.disc-characteristics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.characteristic {
+  text-align: center;
+  padding: var(--spacing-md);
+  background-color: #f9fafb;
   border-radius: var(--border-radius);
-  font-weight: 600;
+  border: 1px solid #f3f4f6;
+}
+
+.characteristic-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.characteristic-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
   font-family: 'Monaco', 'Menlo', monospace;
-  color: #374151;
 }
 
 .disc-stability {
@@ -106,8 +128,8 @@
   font-size: 1rem;
 }
 
-/* Specifications */
-.disc-specs {
+/* Description */
+.disc-description {
   background-color: white;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
@@ -115,37 +137,11 @@
   margin-bottom: var(--spacing-xl);
 }
 
-.disc-specs h2 {
-  color: #1f2937;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: var(--spacing-lg);
-}
-
-.specs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.spec-item {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.spec-label {
-  font-size: 0.875rem;
-  color: #6b7280;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.spec-value {
-  font-size: 1.125rem;
-  color: #1f2937;
-  font-weight: 600;
+.description-text {
+  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* Similar Discs */
@@ -241,30 +237,34 @@ body.dark-mode .disc-name {
   color: #f1f5f9;
 }
 
-body.dark-mode .number {
+body.dark-mode .disc-separator {
   background-color: #374151;
-  color: #d1d5db;
+}
+
+body.dark-mode .characteristic {
+  background-color: #1e293b;
+  border-color: #374151;
+}
+
+body.dark-mode .characteristic-label {
+  color: #9ca3af;
+}
+
+body.dark-mode .characteristic-value {
+  color: #93c5fd;
 }
 
 body.dark-mode .disc-stability {
   color: #d1d5db;
 }
 
-body.dark-mode .disc-specs {
+body.dark-mode .disc-description {
   background-color: #1e293b;
   color: #f1f5f9;
 }
 
-body.dark-mode .disc-specs h2 {
-  color: #f1f5f9;
-}
-
-body.dark-mode .spec-label {
-  color: #9ca3af;
-}
-
-body.dark-mode .spec-value {
-  color: #f1f5f9;
+body.dark-mode .description-text {
+  color: #d1d5db;
 }
 
 body.dark-mode .similar-discs {
@@ -313,19 +313,30 @@ body.dark-mode .similar-disc-numbers {
   }
   
   .disc-name {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-xs);
   }
   
-  .disc-numbers {
-    justify-content: center;
+  .disc-brand {
+    margin-bottom: var(--spacing-md);
+    font-size: 1rem;
+  }
+  
+  .disc-characteristics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .characteristic {
+    padding: var(--spacing-sm);
+  }
+  
+  .characteristic-value {
+    font-size: 1.5rem;
   }
   
   .disc-actions {
     justify-content: center;
-  }
-  
-  .specs-grid {
-    grid-template-columns: 1fr;
   }
   
   .similar-discs-grid {

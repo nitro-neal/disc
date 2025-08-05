@@ -31,8 +31,8 @@ function DiscRow({ disc }) {
         <div
           className="disc-placeholder-small"
           style={{
-            backgroundColor: disc.background_color,
-            color: disc.color
+            backgroundColor: getCategoryBadgeColor(disc.category),
+            color: 'white'
           }}
         >
           {disc.name.charAt(0)}
@@ -42,16 +42,12 @@ function DiscRow({ disc }) {
       <div className="disc-row-info">
         <div className="disc-row-header">
           <h3 className="disc-row-name">{disc.name}</h3>
-          <div 
-            className="category-badge"
-            style={{ backgroundColor: getCategoryBadgeColor(disc.category) }}
-          >
-            {disc.category}
-          </div>
+          <span className="disc-brand">{disc.brand}</span>
         </div>
         
         <div className="disc-row-meta">
-          <span className="disc-brand">{disc.brand}</span>
+          <span className="disc-category">{disc.category}</span>
+          <span className="disc-separator">•</span>
           <span 
             className="disc-stability"
             style={{ color: getStabilityColor(disc.stability) }}

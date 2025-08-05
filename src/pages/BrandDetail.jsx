@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { getDiscsByBrand } from '../utils/dataLoader';
@@ -10,6 +10,11 @@ function BrandDetail() {
   const { state } = useApp();
   const [sortBy, setSortBy] = useState('name');
   const [filterSpeed, setFilterSpeed] = useState('all');
+
+  // Scroll to top when component mounts or slug changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
 
   const brandDiscs = useMemo(() => {
     return getDiscsByBrand(state.discs, slug);

@@ -65,7 +65,7 @@ function AppShell({ children }) {
                 My Bags
               </Link>
             </nav>
-            <div className="theme-toggle">
+            <div className="theme-toggle desktop-only">
               <label className="theme-toggle-label" htmlFor="theme-switch">
                 <input
                   type="checkbox"
@@ -135,6 +135,26 @@ function AppShell({ children }) {
             >
               Get Good
             </Link>
+            
+            {/* Dark mode toggle in mobile menu */}
+            <div className="mobile-theme-toggle">
+              <span className="mobile-theme-label">Dark Mode</span>
+              <label className="theme-toggle-label" htmlFor="mobile-theme-switch">
+                <input
+                  type="checkbox"
+                  id="mobile-theme-switch"
+                  className="theme-toggle-input"
+                  checked={state.settings.theme === 'dark'}
+                  onChange={toggleTheme}
+                  aria-label="Toggle dark mode"
+                />
+                <span className="theme-toggle-slider">
+                  <span className="theme-toggle-icon">
+                    {state.settings.theme === 'dark' ? '🌙' : '☀️'}
+                  </span>
+                </span>
+              </label>
+            </div>
           </div>
         </nav>
       )}
