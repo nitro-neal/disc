@@ -1,95 +1,133 @@
 // Flight path generation utility based on disc flight numbers
 // Generates SVG path data for visualizing disc flight
 
-export function generateFlightPath(disc) {
+export function generateFlightPath(disc, distance = 300, maxDistance = 500) {
   const speed = parseInt(disc.speed);
   const glide = parseInt(disc.glide);
   const turn = parseInt(disc.turn);
   const fade = parseInt(disc.fade);
 
-  // SVG dimensions (matches FlightPathSVG component)
-  const width = 600;
-  const height = 200;
-  const startX = 50;
-  const endX = width - 50;
-  const centerY = height / 2;
+  // SVG dimensions (vertical layout)
+  const width = 400;
+  const height = 600;
+  const centerX = width / 2;
+  const startY = height - 100; // Release point at bottom
+  const endY = 50; // Landing point at top
 
-  // Calculate flight characteristics
-  const distance = speed * 30; // Base distance scaling
-  const totalDistance = Math.min(distance, endX - startX);
+  // Calculate vertical flight path based on distance
+  const flightDistance = Math.min(distance, maxDistance);
+  const totalFlightY = Math.abs(endY - startY) * (flightDistance / maxDistance);
   
-  // Initial angle based on turn (-5 to +1 maps to angles)
-  const initialAngle = turn * -5; // degrees
-  
-  // Fade arc starts at 60% of path length
-  const fadeStartPercent = 0.6;
-  const fadeStartX = startX + (totalDistance * fadeStartPercent);
-  
-  // Generate path points
+  // Generate more points for smoother curves
   const points = [];
-  const numPoints = 20;
+  const numPoints = 40; // More points for smoother curves
+  
+  // Calculate flight characteristics based on disc flight numbers
+  // Turn: negative = right turn, 0 = straight, positive = left turn (rare)
+  // Fade: positive = left hook at end of flight
+  const turnStrength = Math.abs(turn) * 12; // How far the disc turns
+  const fadeStrength = fade * 15; // How far left the disc fades back
   
   for (let i = 0; i <= numPoints; i++) {
     const progress = i / numPoints;
-    const x = startX + (totalDistance * progress);
+    // Y goes from startY (bottom) towards endY (top)
+    const y = startY - (totalFlightY * progress);
     
-    let y = centerY;
+    let x = centerX;
     
-    // Phase 1: Initial turn (first 60% of flight)
-    if (progress <= fadeStartPercent) {
-      const turnProgress = progress / fadeStartPercent;
-      // Turn curve - negative turn means right turn (higher Y), positive means left (lower Y)
-      const turnAmount = Math.sin(turnProgress * Math.PI) * turn * -8;
+    // Create smooth S-curve using realistic disc flight physics
+    if (progress <= 0.65) {
+      // Early flight phase - turn dominates
+      // Use smooth ease-in curve for natural turn
+      const turnProgress = progress / 0.65;
+      const easeIn = turnProgress * turnProgress * (3 - 2 * turnProgress); // Smooth S-curve
       
-      // Glide affects how much the disc stays aloft
-      const glideBonus = (glide - 4) * 3; // Relative to neutral glide of 4
-      const glideEffect = Math.sin(turnProgress * Math.PI * 0.5) * glideBonus;
+      // Turn effect: negative turn = right turn for RHBH (move right = positive X)
+      if (turn < 0) {
+        // Understable disc - turns right (positive X direction)
+        x = centerX + (easeIn * turnStrength);
+      } else if (turn > 0) {
+        // Overstable disc - turns left (negative X direction) - rare
+        x = centerX - (easeIn * turnStrength);
+      } else {
+        // Stable disc - flies straight
+        x = centerX;
+      }
       
-      y = centerY + turnAmount - glideEffect;
+      // Glide effect - affects how much the disc drifts during flight
+      // High glide discs tend to drift more in their turn direction
+      if (turn !== 0) {
+        const glideEffect = (glide - 4) * 2;
+        const glideDrift = easeIn * glideEffect * (turn < 0 ? 1 : -1);
+        x += glideDrift;
+      }
+      
+    } else {
+      // Late flight phase - fade takes over
+      const fadeProgress = (progress - 0.65) / 0.35;
+      const easeOut = fadeProgress * fadeProgress * (3 - 2 * fadeProgress); // Smooth S-curve
+      
+      // Calculate max turn position (where fade starts from)
+      let maxTurnPosition = centerX;
+      if (turn < 0) {
+        maxTurnPosition = centerX + turnStrength;
+        // Add glide drift if applicable
+        if (glide !== 4) {
+          const glideEffect = (glide - 4) * 2;
+          maxTurnPosition += glideEffect; // Glide continues the turn direction
+        }
+      } else if (turn > 0) {
+        maxTurnPosition = centerX - turnStrength;
+        if (glide !== 4) {
+          const glideEffect = (glide - 4) * 2;
+          maxTurnPosition -= glideEffect;
+        }
+      }
+      
+      // Fade brings disc back left (negative X direction)
+      const fadeAmount = easeOut * fadeStrength;
+      x = maxTurnPosition - fadeAmount;
     }
-    // Phase 2: Fade (last 40% of flight)
-    else {
-      const fadeProgress = (progress - fadeStartPercent) / (1 - fadeStartPercent);
-      
-      // Continue from where turn phase ended
-      const endTurnY = centerY + Math.sin(1 * Math.PI) * turn * -8 - (glide - 4) * 3 * Math.sin(1 * Math.PI * 0.5);
-      
-      // Fade curve - always hooks left for RHBH (positive Y direction in our coordinate system)
-      const fadeAmount = fadeProgress * fade * 12;
-      
-      // Gravity effect increases during fade
-      const gravityEffect = fadeProgress * fadeProgress * 20;
-      
-      y = endTurnY + fadeAmount + gravityEffect;
-    }
     
-    // Constrain Y to reasonable bounds
-    y = Math.max(20, Math.min(height - 40, y));
+    // Constrain X to reasonable bounds with some padding
+    x = Math.max(80, Math.min(width - 80, x));
     
     points.push({ x, y });
   }
   
-  // Convert points to SVG path data
+  // Create smooth SVG path using cubic Bezier curves
   const pathData = [];
   
   // Move to start point
   pathData.push(`M ${points[0].x} ${points[0].y}`);
   
-  // Create smooth curve using quadratic bezier curves
+  // Use cubic Bezier curves for maximum smoothness
   for (let i = 1; i < points.length; i++) {
+    const current = points[i];
+    const prev = points[i - 1];
+    
     if (i === 1) {
-      // First curve segment
-      pathData.push(`Q ${points[i].x} ${points[i].y} ${points[i].x} ${points[i].y}`);
+      // First segment - use quadratic for smooth start
+      const controlX = prev.x + (current.x - prev.x) * 0.5;
+      const controlY = prev.y + (current.y - prev.y) * 0.3;
+      pathData.push(`Q ${controlX} ${controlY} ${current.x} ${current.y}`);
+    } else if (i === points.length - 1) {
+      // Last segment - use quadratic for smooth end
+      const controlX = prev.x + (current.x - prev.x) * 0.7;
+      const controlY = prev.y + (current.y - prev.y) * 0.5;
+      pathData.push(`Q ${controlX} ${controlY} ${current.x} ${current.y}`);
     } else {
-      // Smooth curve between points
-      const prevPoint = points[i - 1];
-      const currentPoint = points[i];
+      // Middle segments - use cubic Bezier for maximum smoothness
+      const next = points[i + 1] || current;
+      const prevPrev = points[i - 2] || prev;
       
-      // Control point for smooth curve
-      const controlX = (prevPoint.x + currentPoint.x) / 2;
-      const controlY = (prevPoint.y + currentPoint.y) / 2;
+      // Calculate control points for smooth curves
+      const control1X = prev.x + (current.x - prevPrev.x) * 0.25;
+      const control1Y = prev.y + (current.y - prevPrev.y) * 0.25;
+      const control2X = current.x - (next.x - prev.x) * 0.25;
+      const control2Y = current.y - (next.y - prev.y) * 0.25;
       
-      pathData.push(`Q ${controlX} ${controlY} ${currentPoint.x} ${currentPoint.y}`);
+      pathData.push(`C ${control1X} ${control1Y} ${control2X} ${control2Y} ${current.x} ${current.y}`);
     }
   }
   

@@ -2,13 +2,42 @@ import { useMemo } from 'react';
 import { generateFlightPath } from '../utils/flightPath';
 import './FlightPathSVG.css';
 
-function FlightPathSVG({ disc, width = 600, height = 200 }) {
+function FlightPathSVG({ disc, skillLevel, distance, width = 400, height = 600 }) {
+  // Dynamic scaling based on disc category
+  const getMaxDistanceForCategory = (category) => {
+    switch (category?.toLowerCase()) {
+      case 'distance driver': return 500;
+      case 'hybrid driver': return 450;
+      case 'control driver': return 400;
+      case 'midrange': return 300;
+      case 'approach discs': return 250;
+      case 'putter': return 200;
+      default: return 400;
+    }
+  };
+
+  const getDistanceMarkers = (maxDistance) => {
+    if (maxDistance <= 200) return [0, 50, 100, 150, 200];
+    if (maxDistance <= 250) return [0, 50, 100, 150, 200, 250];
+    if (maxDistance <= 300) return [0, 75, 150, 225, 300];
+    if (maxDistance <= 400) return [0, 100, 200, 300, 400];
+    if (maxDistance <= 450) return [0, 100, 200, 300, 400, 450];
+    return [0, 100, 200, 300, 400, 500];
+  };
+
+  const maxDistance = getMaxDistanceForCategory(disc.category);
+  const distanceMarkers = getDistanceMarkers(maxDistance);
+
   const flightPath = useMemo(() => {
-    return generateFlightPath(disc);
-  }, [disc]);
+    return generateFlightPath(disc, distance, maxDistance);
+  }, [disc, distance, maxDistance]);
 
   const viewBox = `0 0 ${width} ${height}`;
   const pathData = flightPath.join(' ');
+
+  const centerX = width / 2;
+  const startY = height - 100; // Release point at bottom
+  const endY = 50; // Landing point at top
 
   return (
     <div className="flight-path-svg-container">
@@ -23,14 +52,14 @@ function FlightPathSVG({ disc, width = 600, height = 200 }) {
         <defs>
           <pattern
             id="grid"
-            width="50"
-            height="25"
+            width="25"
+            height="50"
             patternUnits="userSpaceOnUse"
           >
             <path
-              d="M 50 0 L 0 0 0 25"
+              d="M 0 50 L 0 0 25 0"
               fill="none"
-              stroke="#f1f5f9"
+              stroke="var(--grid-color, #f1f5f9)"
               strokeWidth="1"
             />
           </pattern>
@@ -38,102 +67,98 @@ function FlightPathSVG({ disc, width = 600, height = 200 }) {
         
         <rect width="100%" height="100%" fill="url(#grid)" />
         
-        {/* Ground line */}
-        <line
-          x1="0"
-          y1={height - 20}
-          x2={width}
-          y2={height - 20}
-          stroke="#94a3b8"
-          strokeWidth="2"
-          strokeDasharray="5,5"
-        />
+        {/* Distance markers */}
+        {distanceMarkers.map((dist, index) => {
+          const y = startY - (startY - endY) * (dist / maxDistance); // Use maxDistance for scaling
+          return (
+            <g key={dist}>
+              <line
+                x1="50"
+                y1={y}
+                x2="60"
+                y2={y}
+                stroke="var(--marker-color, #94a3b8)"
+                strokeWidth="2"
+              />
+              <text
+                x="45"
+                y={y + 4}
+                textAnchor="end"
+                className="distance-marker"
+                fill="var(--text-color, #6b7280)"
+              >
+                {dist}ft
+              </text>
+            </g>
+          );
+        })}
         
         {/* Flight path */}
         <path
           d={pathData}
           fill="none"
-          stroke={disc.color || '#3b82f6'}
+          stroke="var(--flight-path-color, #3b82f6)"
           strokeWidth="4"
           strokeLinecap="round"
           strokeLinejoin="round"
           className="flight-path-line"
         />
         
-        {/* Start point */}
+        {/* Start point (release) */}
         <circle
-          cx="50"
-          cy={height / 2}
-          r="6"
+          cx={centerX}
+          cy={startY}
+          r="8"
           fill="#10b981"
           stroke="white"
-          strokeWidth="2"
+          strokeWidth="3"
         />
         
-        {/* End point */}
+        {/* End point (landing) */}
         <circle
-          cx={width - 50}
-          cy={flightPath[flightPath.length - 1]?.split(' ')[2] || height / 2}
-          r="6"
+          cx={centerX + (parseInt(disc.turn) * 10) - (parseInt(disc.fade) * 15)}
+          cy={startY - (startY - endY) * (distance / maxDistance)}
+          r="8"
           fill="#ef4444"
           stroke="white"
-          strokeWidth="2"
+          strokeWidth="3"
         />
         
         {/* Labels */}
         <text
-          x="50"
-          y={height - 5}
+          x={centerX}
+          y={startY + 25}
           textAnchor="middle"
           className="flight-path-label"
-          fill="#6b7280"
+          fill="var(--text-color, #6b7280)"
+          fontWeight="600"
         >
-          Release
+          Release Point
         </text>
         
         <text
-          x={width - 50}
-          y={height - 5}
+          x={centerX + (parseInt(disc.turn) * 10) - (parseInt(disc.fade) * 15)}
+          y={startY - (startY - endY) * (distance / maxDistance) - 15}
           textAnchor="middle"
           className="flight-path-label"
-          fill="#6b7280"
+          fill="#ef4444"
+          fontWeight="600"
         >
-          Landing
+          {distance} ft
         </text>
         
-        {/* Wind direction indicator */}
-        <g className="wind-indicator">
-          <text
-            x={width - 100}
-            y="20"
-            textAnchor="end"
-            className="wind-label"
-            fill="#9ca3af"
-          >
-            No Wind
-          </text>
-          <path
-            d="M {width - 90} 15 L {width - 80} 10 L {width - 80} 20 Z"
-            fill="#9ca3af"
-          />
-        </g>
+        {/* Direction indicators */}
+        <text
+          x={width - 30}
+          y={startY + 50}
+          textAnchor="middle"
+          className="direction-label"
+          fill="var(--text-color, #9ca3af)"
+          transform={`rotate(-90, ${width - 30}, ${startY + 50})`}
+        >
+          Flight Direction →
+        </text>
       </svg>
-      
-      {/* Flight characteristics overlay */}
-      <div className="flight-characteristics-overlay">
-        <div className="flight-stage">
-          <div className="stage-name">Initial Turn</div>
-          <div className="stage-value">{disc.turn}</div>
-        </div>
-        <div className="flight-stage">
-          <div className="stage-name">Glide</div>
-          <div className="stage-value">{disc.glide}</div>
-        </div>
-        <div className="flight-stage">
-          <div className="stage-name">Fade</div>
-          <div className="stage-value">{disc.fade}</div>
-        </div>
-      </div>
     </div>
   );
 }

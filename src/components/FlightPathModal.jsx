@@ -1,8 +1,35 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import FlightPathSVG from './FlightPathSVG';
 import './FlightPathModal.css';
 
 function FlightPathModal({ disc, onClose }) {
+  const [skillLevel, setSkillLevel] = useState('intermediate');
+
+  // Skill level constants for C_skill
+  const skillConstants = {
+    beginner: 25,
+    intermediate: 30,
+    advanced: 35,
+    professional: 40
+  };
+
+  // Calculate flight distance using the provided formula
+  const calculateDistance = () => {
+    const C_skill = skillConstants[skillLevel];
+    const speed = parseInt(disc.speed);
+    const glide = parseInt(disc.glide);
+    const turn = parseInt(disc.turn);
+    const fade = parseInt(disc.fade);
+
+    const Distance_ft = C_skill * speed * 
+      (1 + 0.10 * (glide - 4)) * 
+      (1 + 0.05 * (-turn)) * 
+      (1 - 0.05 * fade);
+
+    return Math.round(Distance_ft);
+  };
+
+  const distance = calculateDistance();
   // Close on escape key
   useEffect(() => {
     const handleEscape = (e) => {
@@ -46,8 +73,30 @@ function FlightPathModal({ disc, onClose }) {
           </button>
         </div>
 
+        <div className="flight-controls">
+          <div className="skill-selector">
+            <label htmlFor="skill-level">Skill Level:</label>
+            <select
+              id="skill-level"
+              value={skillLevel}
+              onChange={(e) => setSkillLevel(e.target.value)}
+              className="skill-dropdown"
+            >
+              <option value="beginner">Beginner (25)</option>
+              <option value="intermediate">Intermediate (30)</option>
+              <option value="advanced">Advanced (35)</option>
+              <option value="professional">Professional (40)</option>
+            </select>
+          </div>
+          
+          <div className="distance-display">
+            <span className="distance-label">Estimated Distance:</span>
+            <span className="distance-value">{distance} ft</span>
+          </div>
+        </div>
+
         <div className="flight-path-container">
-          <FlightPathSVG disc={disc} />
+          <FlightPathSVG disc={disc} skillLevel={skillLevel} distance={distance} />
         </div>
 
         <div className="flight-path-info">
