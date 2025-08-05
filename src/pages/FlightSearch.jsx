@@ -28,24 +28,66 @@ function FlightSearch() {
 
   // Initialize from URL params
   useEffect(() => {
+    // Handle range parameters (speed_min, speed_max, etc.)
+    const speedMin = searchParams.get('speed_min');
+    const speedMax = searchParams.get('speed_max');
+    const glideMin = searchParams.get('glide_min');
+    const glideMax = searchParams.get('glide_max');
+    const turnMin = searchParams.get('turn_min');
+    const turnMax = searchParams.get('turn_max');
+    const fadeMin = searchParams.get('fade_min');
+    const fadeMax = searchParams.get('fade_max');
+    
+    // Handle single value parameters (for backwards compatibility and "Find Similar" links)
     const speedParam = searchParams.get('speed');
     const glideParam = searchParams.get('glide');
     const turnParam = searchParams.get('turn');
     const fadeParam = searchParams.get('fade');
 
-    if (speedParam) {
+    // Speed: prioritize range params, fallback to single value
+    if (speedMin && speedMax) {
+      const min = parseInt(speedMin);
+      const max = parseInt(speedMax);
+      if (!isNaN(min) && !isNaN(max)) {
+        setSpeed([Math.max(1, min), Math.min(15, max)]);
+      }
+    } else if (speedParam) {
       const value = parseInt(speedParam);
       if (!isNaN(value)) setSpeed([Math.max(1, value - 1), Math.min(15, value + 1)]);
     }
-    if (glideParam) {
+    
+    // Glide: prioritize range params, fallback to single value
+    if (glideMin && glideMax) {
+      const min = parseInt(glideMin);
+      const max = parseInt(glideMax);
+      if (!isNaN(min) && !isNaN(max)) {
+        setGlide([Math.max(1, min), Math.min(7, max)]);
+      }
+    } else if (glideParam) {
       const value = parseInt(glideParam);
       if (!isNaN(value)) setGlide([Math.max(1, value - 1), Math.min(7, value + 1)]);
     }
-    if (turnParam) {
+    
+    // Turn: prioritize range params, fallback to single value
+    if (turnMin && turnMax) {
+      const min = parseInt(turnMin);
+      const max = parseInt(turnMax);
+      if (!isNaN(min) && !isNaN(max)) {
+        setTurn([Math.max(-5, min), Math.min(1, max)]);
+      }
+    } else if (turnParam) {
       const value = parseInt(turnParam);
       if (!isNaN(value)) setTurn([Math.max(-5, value - 1), Math.min(1, value + 1)]);
     }
-    if (fadeParam) {
+    
+    // Fade: prioritize range params, fallback to single value
+    if (fadeMin && fadeMax) {
+      const min = parseInt(fadeMin);
+      const max = parseInt(fadeMax);
+      if (!isNaN(min) && !isNaN(max)) {
+        setFade([Math.max(0, min), Math.min(5, max)]);
+      }
+    } else if (fadeParam) {
       const value = parseInt(fadeParam);
       if (!isNaN(value)) setFade([Math.max(0, value - 1), Math.min(5, value + 1)]);
     }
