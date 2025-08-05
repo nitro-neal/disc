@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import './Modal.css';
 
 function Modal({ children, onClose, title, maxWidth = '500px' }) {
@@ -28,7 +29,7 @@ function Modal({ children, onClose, title, maxWidth = '500px' }) {
     }
   };
 
-  return (
+  const modalContent = (
     <div className="modal-backdrop" onClick={handleBackdropClick}>
       <div 
         className="modal"
@@ -56,6 +57,8 @@ function Modal({ children, onClose, title, maxWidth = '500px' }) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
 
 export default Modal;

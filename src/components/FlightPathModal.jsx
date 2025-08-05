@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import FlightPathSVG from './FlightPathSVG';
 import './FlightPathModal.css';
 
@@ -56,7 +57,7 @@ function FlightPathModal({ disc, onClose }) {
     }
   };
 
-  return (
+  const modalContent = (
     <div className="flight-path-modal-backdrop" onClick={handleBackdropClick}>
       <div className="flight-path-modal">
         <div className="flight-path-modal-header">
@@ -157,6 +158,8 @@ function FlightPathModal({ disc, onClose }) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
 
 export default FlightPathModal;
