@@ -14,17 +14,8 @@
     <meta name="apple-mobile-web-app-title" content="DiscFinder" />
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/disc/manifest.json" />
-    <script>
-      // GitHub Pages SPA support
-      (function(){
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect != location.href) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-    </script>
+    <link rel="manifest" href="/manifest.json" />
+    <!-- GitHub Pages SPA redirect script removed for Vercel deployment -->
   </head>
   <body>
     <div id="root"></div>

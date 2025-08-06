@@ -22,10 +22,8 @@ export default defineConfig(({ command }) => {
     },
   }
 
-  // Only set base path for production builds (GitHub Pages)
-  if (command !== 'serve') {
-    config.base = '/disc/'
-  }
+  // Base path removed for Vercel deployment
+  // GitHub Pages specific base path was: '/disc/'
 
   return config
 })
