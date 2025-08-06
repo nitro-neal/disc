@@ -227,19 +227,23 @@ function FlightSearch() {
             </div>
           </div>
 
-          <div className="flight-controls-footer">
-            <div className="results-info">
-              <span className="results-count">{allResults.length}</span> discs found
-              {allResults.length > PAGE_SIZE && (
-                <span className="pagination-info">
-                  (showing {startIndex + 1}-{Math.min(endIndex, allResults.length)})
-                </span>
-              )}
-            </div>
-            {hasActiveFilters() && (
+          {hasActiveFilters() && (
+            <div className="flight-controls-footer">
               <button onClick={resetFilters} className="btn-outline">
                 Reset Filters
               </button>
+            </div>
+          )}
+        </div>
+
+        {/* Results Info */}
+        <div className="results-header">
+          <div className="results-info">
+            <span className="results-count">{allResults.length}</span> discs found
+            {allResults.length > PAGE_SIZE && (
+              <span className="pagination-info">
+                (showing {startIndex + 1}-{Math.min(endIndex, allResults.length)})
+              </span>
             )}
           </div>
         </div>
