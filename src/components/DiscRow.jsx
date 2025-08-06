@@ -25,6 +25,12 @@ function DiscRow({ disc }) {
     }
   };
 
+  const getDiscLetter = (name) => {
+    // Handle special characters like ( and # by finding the first letter
+    const firstLetter = name.match(/[A-Za-z]/);
+    return firstLetter ? firstLetter[0].toUpperCase() : name.charAt(0).toUpperCase();
+  };
+
   return (
     <Link to={`/disc/${disc.name_slug}`} className="disc-row">
       <div className="disc-row-image">
@@ -35,7 +41,7 @@ function DiscRow({ disc }) {
             color: 'white'
           }}
         >
-          {disc.name.charAt(0)}
+{getDiscLetter(disc.name)}
         </div>
       </div>
 

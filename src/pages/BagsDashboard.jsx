@@ -95,6 +95,13 @@ function BagsDashboard() {
                     >
                       📊
                     </Link>
+                    <Link
+                      to={`/bag/${bag.id}`}
+                      className="bag-action-btn"
+                      title="Add disc to bag"
+                    >
+                      ➕
+                    </Link>
                     <button
                       onClick={() => setShowDeleteModal(bag.id)}
                       className="bag-action-btn delete-btn"

@@ -32,13 +32,17 @@ function AppShell({ children }) {
             
             <SearchBar />
             
-            <nav className="desktop-nav">
+            <div className="mobile-nav-right">
               <Link 
-                to="/" 
-                className={`nav-link ${isActive('/') ? 'active' : ''}`}
+                to="/bags" 
+                className="mobile-bag-shortcut"
+                title="My Bags"
               >
-                Home
+                🎒
               </Link>
+            </div>
+            
+            <nav className="desktop-nav">
               <Link 
                 to="/brand" 
                 className={`nav-link ${isActive('/brand') ? 'active' : ''}`}
@@ -100,13 +104,6 @@ function AppShell({ children }) {
       {isMenuOpen && (
         <nav className="mobile-nav">
           <div className="container">
-            <Link 
-              to="/" 
-              className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
             <Link 
               to="/brand" 
               className={`mobile-nav-link ${isActive('/brand') ? 'active' : ''}`}

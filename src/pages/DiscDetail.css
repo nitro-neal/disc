@@ -104,6 +104,15 @@
   font-weight: 700;
   color: var(--color-primary);
   font-family: 'Monaco', 'Menlo', monospace;
+  margin-bottom: var(--spacing-xs);
+}
+
+.characteristic-description {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .disc-stability {
@@ -121,11 +130,105 @@
   flex-wrap: wrap;
 }
 
+/* Center buttons on desktop */
+@media (min-width: 768px) {
+  .disc-actions {
+    justify-content: center;
+  }
+}
+
 .disc-actions .btn-primary,
 .disc-actions .btn-outline,
 .disc-actions .btn-secondary {
   padding: var(--spacing-md) var(--spacing-lg);
   font-size: 1rem;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* Ensure consistent btn-primary styling for all elements */
+.disc-actions .btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.disc-actions .btn-primary:hover {
+  background-color: #0066cc;
+  color: white;
+}
+
+/* Add to Bag Dropdown */
+.add-to-bag-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  min-width: 200px;
+  margin-top: 4px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f4f6;
+}
+
+.dropdown-item:first-child {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.dropdown-item:last-child {
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.bag-name {
+  font-weight: 500;
+}
+
+.bag-count {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: var(--spacing-xs) 0;
+}
+
+.create-bag-link {
+  color: var(--color-primary);
+  font-weight: 500;
 }
 
 /* Description */
@@ -295,6 +398,32 @@ body.dark-mode .similar-disc-brand {
 
 body.dark-mode .similar-disc-numbers {
   color: #6b7280;
+}
+
+/* Dark mode dropdown styles */
+body.dark-mode .dropdown-menu {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+body.dark-mode .dropdown-item {
+  color: #e5e7eb;
+}
+
+body.dark-mode .dropdown-item:hover {
+  background-color: #4b5563;
+}
+
+body.dark-mode .bag-count {
+  color: #9ca3af;
+}
+
+body.dark-mode .dropdown-divider {
+  background-color: #4b5563;
+}
+
+body.dark-mode .create-bag-link {
+  color: #60a5fa;
 }
 
 /* Mobile responsiveness */

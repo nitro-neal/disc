@@ -96,6 +96,16 @@
   animation: fadeInUp 0.8s ease-out 0.4s both;
 }
 
+/* Desktop layout - force 2x2 grid */
+@media (min-width: 768px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .menu-card {
   display: block;
   text-decoration: none;

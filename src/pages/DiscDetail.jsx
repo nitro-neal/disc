@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { getDiscBySlug } from '../utils/dataLoader';
 import { findSimilarDiscs } from '../utils/fuzzySearch';
@@ -8,8 +8,10 @@ import './DiscDetail.css';
 
 function DiscDetail() {
   const { slug } = useParams();
-  const { state } = useApp();
+  const { state, actions } = useApp();
   const [showFlightPath, setShowFlightPath] = useState(false);
+  const [showAddToBag, setShowAddToBag] = useState(false);
+  const dropdownRef = useRef(null);
 
   // Scroll to top when component mounts or slug changes
   useEffect(() => {
@@ -79,6 +81,53 @@ function DiscDetail() {
     }
   };
 
+  const getDiscLetter = (name) => {
+    // Handle special characters like ( and # by finding the first letter
+    const firstLetter = name.match(/[A-Za-z]/);
+    return firstLetter ? firstLetter[0].toUpperCase() : name.charAt(0).toUpperCase();
+  };
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowAddToBag(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleAddToBag = (bagId) => {
+    if (!disc) return;
+
+    const bag = state.bags.find(b => b.id === bagId);
+    if (!bag) return;
+
+    // Check if disc is already in bag
+    const isAlreadyInBag = bag.discs.some(d => d.id === disc.id);
+    if (isAlreadyInBag) {
+      alert('This disc is already in your bag!');
+      return;
+    }
+
+    // Add disc to bag
+    const updatedBag = {
+      ...bag,
+      discs: [...bag.discs, disc],
+      updatedAt: new Date().toISOString()
+    };
+
+    actions.updateBag(updatedBag);
+    setShowAddToBag(false);
+    
+    // Show success message
+    alert(`Added ${disc.name} to ${bag.name}!`);
+  };
+
   return (
     <div className="disc-detail">
       <div className="container">
@@ -92,7 +141,7 @@ function DiscDetail() {
                 color: disc.color
               }}
             >
-              {disc.name.charAt(0)}
+{getDiscLetter(disc.name)}
             </div>
           </div>
           
@@ -106,21 +155,33 @@ function DiscDetail() {
               <div className="characteristic">
                 <div className="characteristic-label">Speed</div>
                 <div className="characteristic-value">{disc.speed}</div>
+                <div className="characteristic-description">
+                  How fast the disc flies through the air
+                </div>
               </div>
               
               <div className="characteristic">
                 <div className="characteristic-label">Glide</div>
                 <div className="characteristic-value">{disc.glide}</div>
+                <div className="characteristic-description">
+                  How well the disc maintains loft during flight
+                </div>
               </div>
               
               <div className="characteristic">
                 <div className="characteristic-label">Turn</div>
                 <div className="characteristic-value">{disc.turn}</div>
+                <div className="characteristic-description">
+                  Initial flight path tendency (negative = right turn for RHBH)
+                </div>
               </div>
               
               <div className="characteristic">
                 <div className="characteristic-label">Fade</div>
                 <div className="characteristic-value">{disc.fade}</div>
+                <div className="characteristic-description">
+                  End flight path tendency (positive = left hook for RHBH)
+                </div>
               </div>
             </div>
             
@@ -143,10 +204,46 @@ function DiscDetail() {
           </button>
           <Link
             to={`/flight?speed=${disc.speed}&glide=${disc.glide}&turn=${disc.turn}&fade=${disc.fade}`}
-            className="btn-outline"
+            className="btn-primary"
           >
             Find Similar
           </Link>
+          
+          {/* Add to Bag Dropdown */}
+          {state.bags.length > 0 && (
+            <div className="add-to-bag-dropdown" ref={dropdownRef}>
+              <button
+                onClick={() => setShowAddToBag(!showAddToBag)}
+                className="btn-primary"
+              >
+                Add to Bag ▼
+              </button>
+              
+              {showAddToBag && (
+                <div className="dropdown-menu">
+                  {state.bags.map(bag => (
+                    <button
+                      key={bag.id}
+                      onClick={() => handleAddToBag(bag.id)}
+                      className="dropdown-item"
+                    >
+                      <span className="bag-name">{bag.name}</span>
+                      <span className="bag-count">({bag.discs?.length || 0} discs)</span>
+                    </button>
+                  ))}
+                  <div className="dropdown-divider"></div>
+                  <Link
+                    to="/bags"
+                    className="dropdown-item create-bag-link"
+                    onClick={() => setShowAddToBag(false)}
+                  >
+                    + Create New Bag
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+          
           <a
             href={disc.link}
             target="_blank"
@@ -182,7 +279,7 @@ function DiscDetail() {
                       color: similarDisc.color
                     }}
                   >
-                    {similarDisc.name.charAt(0)}
+{getDiscLetter(similarDisc.name)}
                   </div>
                   <div className="similar-disc-info">
                     <div className="similar-disc-name">{similarDisc.name}</div>

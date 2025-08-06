@@ -88,6 +88,12 @@ function SearchBar() {
     );
   };
 
+  const getDiscLetter = (name) => {
+    // Handle special characters like ( and # by finding the first letter
+    const firstLetter = name.match(/[A-Za-z]/);
+    return firstLetter ? firstLetter[0].toUpperCase() : name.charAt(0).toUpperCase();
+  };
+
   return (
     <div className="search-bar" ref={searchRef}>
       <div className="search-input-container">
@@ -136,7 +142,7 @@ function SearchBar() {
                     color: disc.color 
                   }}
                 >
-                  {disc.name.charAt(0)}
+{getDiscLetter(disc.name)}
                 </div>
               </div>
               <div className="search-result-info">

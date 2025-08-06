@@ -141,6 +141,12 @@ function BagEditor() {
     }
   };
 
+  const getDiscLetter = (name) => {
+    // Handle special characters like ( and # by finding the first letter
+    const firstLetter = name.match(/[A-Za-z]/);
+    return firstLetter ? firstLetter[0].toUpperCase() : name.charAt(0).toUpperCase();
+  };
+
   return (
     <div className="bag-editor">
       <div className="container">
@@ -263,13 +269,13 @@ function BagEditor() {
                   <div className="search-results-list">
                     {filteredResults.map(disc => (
                       <div key={disc.id} className="search-result-item">
-                        <button
-                          onClick={() => window.open(`/disc/${disc.name_slug}`, '_blank')}
+                        <Link
+                          to={`/disc/${disc.name_slug}`}
                           className="details-btn"
                           title="View disc details"
                         >
                           Details
-                        </button>
+                        </Link>
                         <div className="disc-row-content">
                           <div className="disc-row-image">
                             <div
@@ -279,7 +285,7 @@ function BagEditor() {
                                 color: 'white'
                               }}
                             >
-                              {disc.name.charAt(0)}
+{getDiscLetter(disc.name)}
                             </div>
                           </div>
 
