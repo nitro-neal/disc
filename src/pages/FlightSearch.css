@@ -12,16 +12,17 @@
 }
 
 .flight-sliders {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-}
-
-.slider-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.slider-row {
+  display: contents;
 }
 
 .slider-row + .slider-row {
@@ -48,11 +49,12 @@
 .flight-controls-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding-top: var(--spacing-lg);
   border-top: 1px solid #f3f4f6;
   flex-wrap: wrap;
-  gap: var(--spacing-md);
+  gap: var(--spacing-xl);
+  min-height: 48px;
 }
 
 .results-info {
@@ -214,11 +216,28 @@ body.dark-mode .results-list::-webkit-scrollbar-thumb:hover {
   background: #6b7280;
 }
 
-/* Mobile responsiveness */
+/* Tablet and mobile responsiveness */
+@media (max-width: 1024px) {
+  .flight-sliders {
+    max-width: 600px;
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 900px) {
+  .flight-sliders {
+    max-width: 500px;
+    gap: var(--spacing-md);
+  }
+}
+
 @media (max-width: 768px) {
-  .slider-row {
+  .flight-sliders {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
   }
   
   .flight-controls {
@@ -227,12 +246,23 @@ body.dark-mode .results-list::-webkit-scrollbar-thumb:hover {
   
   .flight-controls-footer {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-md);
   }
   
   .results-info {
     justify-content: center;
+    width: 100%;
+    order: 2;
+  }
+  
+  .flight-controls-footer .btn-outline {
+    order: 1;
+    width: auto;
+    min-width: 120px;
   }
 }
 
@@ -242,11 +272,24 @@ body.dark-mode .results-list::-webkit-scrollbar-thumb:hover {
   }
   
   .flight-sliders {
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
   }
   
-  .slider-row {
-    gap: var(--spacing-md);
+  .slider-container {
+    padding: var(--spacing-md);
+  }
+  
+  .flight-controls-footer {
+    padding-top: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+  
+  .results-info {
+    font-size: 0.8rem;
+  }
+  
+  .results-count {
+    font-size: 0.9rem;
   }
   
   .pagination-controls {
@@ -256,9 +299,5 @@ body.dark-mode .results-list::-webkit-scrollbar-thumb:hover {
   
   .pagination-btn {
     min-width: 80px;
-  }
-  
-  .slider-container {
-    padding: var(--spacing-md);
   }
 }

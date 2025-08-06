@@ -13,6 +13,17 @@ function DiscDetail() {
   const [showAddToBag, setShowAddToBag] = useState(false);
   const dropdownRef = useRef(null);
 
+  // Handle click outside to close dropdown (runs once)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowAddToBag(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // Scroll to top when component mounts or slug changes
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,6 +40,19 @@ function DiscDetail() {
     );
   }
 
+  // If there's an error loading data, show error
+  if (state.error) {
+    return (
+      <div className="container">
+        <div className="error-page">
+          <h1>Error Loading Data</h1>
+          <p>{state.error}</p>
+          <Link to="/" className="btn-primary">Go Home</Link>
+        </div>
+      </div>
+    );
+  }
+
   const disc = getDiscBySlug(state.discs, slug);
 
   if (!disc) {
@@ -36,7 +60,7 @@ function DiscDetail() {
       <div className="container">
         <div className="error-page">
           <h1>Disc Not Found</h1>
-          <p>The disc you're looking for doesn't exist.</p>
+          <p>The disc "{slug}" doesn't exist in our database.</p>
           <Link to="/" className="btn-primary">Go Home</Link>
         </div>
       </div>
@@ -86,20 +110,6 @@ function DiscDetail() {
     const firstLetter = name.match(/[A-Za-z]/);
     return firstLetter ? firstLetter[0].toUpperCase() : name.charAt(0).toUpperCase();
   };
-
-  // Handle click outside to close dropdown
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowAddToBag(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const handleAddToBag = (bagId) => {
     if (!disc) return;

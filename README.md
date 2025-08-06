@@ -1,4 +1,4 @@
-# 🥏 DiscFinder - Disc Golf Webapp
+# 🥏 DiscBagPro - Disc Golf Webapp
 
 A comprehensive disc golf webapp that helps players find discs, compare flight paths, and build the perfect bag for their game.
 

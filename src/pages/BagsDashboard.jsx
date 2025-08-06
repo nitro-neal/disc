@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { v4 as uuidv4 } from 'uuid';
 import Modal from '../components/Modal';
@@ -7,6 +7,7 @@ import './BagsDashboard.css';
 
 function BagsDashboard() {
   const { state, actions } = useApp();
+  const navigate = useNavigate();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(null);
   const [bagName, setBagName] = useState('');
@@ -41,6 +42,14 @@ function BagsDashboard() {
   const handleDeleteBag = (bagId) => {
     actions.deleteBag(bagId);
     setShowDeleteModal(null);
+  };
+
+  const handleBagCardClick = (bagId, event) => {
+    // Don't navigate if clicking on action buttons or links
+    if (event.target.closest('.bag-actions') || event.target.closest('.bag-name') || event.target.closest('.edit-bag-link')) {
+      return;
+    }
+    navigate(`/bag/${bagId}`);
   };
 
   const formatDate = (dateString) => {
@@ -82,7 +91,11 @@ function BagsDashboard() {
         ) : (
           <div className="bags-grid">
             {state.bags.map(bag => (
-              <div key={bag.id} className="bag-card">
+              <div 
+                key={bag.id} 
+                className="bag-card clickable-card" 
+                onClick={(e) => handleBagCardClick(bag.id, e)}
+              >
                 <div className="bag-card-header">
                   <Link to={`/bag/${bag.id}`} className="bag-name">
                     {bag.name}

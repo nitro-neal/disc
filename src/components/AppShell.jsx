@@ -27,7 +27,7 @@ function AppShell({ children }) {
         <div className="container">
           <div className="header-content">
             <Link to="/" className="logo">
-              <span className="logo-text">DiscFinder</span>
+              <span className="logo-text">DiscBagPro</span>
             </Link>
             
             <SearchBar />
@@ -60,6 +60,13 @@ function AppShell({ children }) {
                 className={`nav-link ${isActive('/get-good') ? 'active' : ''}`}
               >
                 Get Good
+              </Link>
+
+              <Link 
+                to="/pro-bags" 
+                className={`nav-link ${isActive('/pro-bags') ? 'active' : ''}`}
+              >
+                Pro Bags
               </Link>
 
               <Link 
@@ -126,6 +133,13 @@ function AppShell({ children }) {
               My Bags
             </Link>
             <Link 
+              to="/pro-bags" 
+              className={`mobile-nav-link ${isActive('/pro-bags') ? 'active' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Pro Bags
+            </Link>
+            <Link 
               to="/get-good" 
               className={`mobile-nav-link ${isActive('/get-good') ? 'active' : ''}`}
               onClick={() => setIsMenuOpen(false)}
@@ -163,7 +177,7 @@ function AppShell({ children }) {
       <footer className="app-footer">
         <div className="container">
           <div className="footer-content">
-            <p>&copy; 2025 DiscFinder. Built for disc golf enthusiasts.</p>
+            <p>&copy; 2025 DiscBagPro. Built for disc golf enthusiasts.</p>
             <div className="footer-links">
               <a href="#" target="_blank" rel="noopener noreferrer">About</a>
               <a href="#" target="_blank" rel="noopener noreferrer">Contact</a>

@@ -6,7 +6,7 @@ const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 // Initialize localforage
 localforage.config({
-  name: 'DiscGolfApp',
+  name: 'DiscBagPro',
   storeName: 'discs'
 });
 
@@ -60,6 +60,14 @@ export async function loadDiscs() {
 // Utility functions for disc data
 export function getDiscBySlug(discs, slug) {
   return discs.find(disc => disc.name_slug === slug);
+}
+
+export function getDiscById(discs, id) {
+  return discs.find(disc => disc.id === id);
+}
+
+export function getDiscsByIds(discs, ids) {
+  return ids.map(id => discs.find(disc => disc.id === id)).filter(Boolean);
 }
 
 export function getDiscsByBrand(discs, brandSlug) {

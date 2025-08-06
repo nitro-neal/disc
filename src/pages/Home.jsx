@@ -31,6 +31,12 @@ function Home() {
       icon: '🏆'
     },
     {
+      title: 'Pro Bags',
+      description: 'Explore bags from professional players',
+      path: '/pro-bags',
+      icon: '⭐'
+    },
+    {
       title: 'My Bags',
       description: 'Build and manage your disc bags',
       path: '/bags',
@@ -96,7 +102,7 @@ function Home() {
         {/* Getting Started */}
         {state.bags.length === 0 && !state.loading && (
           <section className="getting-started">
-            <h2>New to DiscFinder?</h2>
+            <h2>New to DiscBagPro?</h2>
             <div className="getting-started-cards">
               <div className="getting-started-card">
                 <h4>🔍 Search for Discs</h4>

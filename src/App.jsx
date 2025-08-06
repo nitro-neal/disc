@@ -10,6 +10,9 @@ import BagsDashboard from './pages/BagsDashboard';
 import BagEditor from './pages/BagEditor';
 import BagReport from './pages/BagReport';
 import GetGood from './pages/GetGood';
+import ProBags from './pages/ProBags';
+import ProBagDetail from './pages/ProBagDetail';
+import NotFound from './pages/NotFound';
 import './App.css';
 
 function App() {
@@ -27,6 +30,10 @@ function App() {
             <Route path="/bag/:id" element={<BagEditor />} />
             <Route path="/bag/:id/report" element={<BagReport />} />
             <Route path="/get-good" element={<GetGood />} />
+            <Route path="/pro-bags" element={<ProBags />} />
+            <Route path="/pro-bag/:slug" element={<ProBagDetail />} />
+            {/* 404 Catch-all route - must be last */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </AppShell>
       </Router>
