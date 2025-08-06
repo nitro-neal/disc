@@ -1,0 +1,27 @@
+{
+  "name": "DiscBagPro - Disc Golf Webapp",
+  "short_name": "DiscBagPro",
+  "description": "Find your perfect disc golf disc. Search thousands of discs, compare flight paths, and build the perfect bag for your game.",
+  "theme_color": "#0082f4",
+  "background_color": "#fafafa",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["sports", "utilities"],
+  "lang": "en-US"
+}

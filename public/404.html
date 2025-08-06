@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DiscFinder - Disc Golf Webapp</title>
+  <script>
+    // GitHub Pages SPA redirect script
+    // This script takes the current URL and redirects to the root URL
+    // with the path stored as a query parameter
+    (function(){
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    // If this 404.html is being served, redirect to index.html with the path as a parameter
+    var segmentCount = 1; // Number of directories in your GitHub Pages URL
+    var l = window.location;
+    
+    sessionStorage.redirect = l.origin + l.pathname.split('/').slice(0, segmentCount + 1).join('/') + 
+      '/#' + l.pathname.slice(1).split('/').slice(segmentCount).join('/') + 
+      (l.search ? '&' + l.search.slice(1) : '');
+    
+    l.replace(l.origin + l.pathname.split('/').slice(0, segmentCount + 1).join('/'));
+  </script>
+</body>
+</html>
