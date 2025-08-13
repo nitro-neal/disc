@@ -25,6 +25,12 @@ function Home() {
       icon: '📈'
     },
     {
+      title: 'Scorecard',
+      description: 'Track your rounds and scores',
+      path: '/scorecards',
+      icon: '📋'
+    },
+    {
       title: 'Get Good',
       description: 'Learn how to improve your disc golf game',
       path: '/get-good',

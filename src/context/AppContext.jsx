@@ -7,6 +7,9 @@ const AppContext = createContext();
 const initialState = {
   discs: [],
   bags: JSON.parse(localStorage.getItem('dg-bags') || '[]'),
+  // Scorecards and saved players persisted locally
+  scorecards: JSON.parse(localStorage.getItem('dg-scorecards') || '[]'),
+  savedPlayers: JSON.parse(localStorage.getItem('dg-saved-players') || '[]'),
   loading: true,
   error: null,
   searchQuery: '',
@@ -22,6 +25,12 @@ const ACTIONS = {
   ADD_BAG: 'ADD_BAG',
   UPDATE_BAG: 'UPDATE_BAG',
   DELETE_BAG: 'DELETE_BAG',
+  // Scorecards
+  ADD_SCORECARD: 'ADD_SCORECARD',
+  UPDATE_SCORECARD: 'UPDATE_SCORECARD',
+  DELETE_SCORECARD: 'DELETE_SCORECARD',
+  // Saved players
+  SET_SAVED_PLAYERS: 'SET_SAVED_PLAYERS',
   UPDATE_SETTINGS: 'UPDATE_SETTINGS'
 };
 
@@ -61,6 +70,32 @@ function appReducer(state, action) {
       const newSettings = { ...state.settings, ...action.payload };
       localStorage.setItem('dg-settings', JSON.stringify(newSettings));
       return { ...state, settings: newSettings };
+    
+    // Scorecards
+    case ACTIONS.ADD_SCORECARD: {
+      const newScorecards = [...state.scorecards, action.payload];
+      localStorage.setItem('dg-scorecards', JSON.stringify(newScorecards));
+      return { ...state, scorecards: newScorecards };
+    }
+    case ACTIONS.UPDATE_SCORECARD: {
+      const updatedScorecards = state.scorecards.map(sc => 
+        sc.id === action.payload.id ? { ...sc, ...action.payload } : sc
+      );
+      localStorage.setItem('dg-scorecards', JSON.stringify(updatedScorecards));
+      return { ...state, scorecards: updatedScorecards };
+    }
+    case ACTIONS.DELETE_SCORECARD: {
+      const filtered = state.scorecards.filter(sc => sc.id !== action.payload);
+      localStorage.setItem('dg-scorecards', JSON.stringify(filtered));
+      return { ...state, scorecards: filtered };
+    }
+    
+    // Saved players
+    case ACTIONS.SET_SAVED_PLAYERS: {
+      const unique = Array.from(new Set(action.payload.map(n => n.trim()))).filter(Boolean);
+      localStorage.setItem('dg-saved-players', JSON.stringify(unique));
+      return { ...state, savedPlayers: unique };
+    }
     
     default:
       return state;
@@ -103,7 +138,15 @@ export function ContextProvider({ children }) {
     
     deleteBag: (bagId) => dispatch({ type: ACTIONS.DELETE_BAG, payload: bagId }),
     
-    updateSettings: (settings) => dispatch({ type: ACTIONS.UPDATE_SETTINGS, payload: settings })
+    updateSettings: (settings) => dispatch({ type: ACTIONS.UPDATE_SETTINGS, payload: settings }),
+    
+    // Scorecards
+    addScorecard: (scorecard) => dispatch({ type: ACTIONS.ADD_SCORECARD, payload: scorecard }),
+    updateScorecard: (scorecard) => dispatch({ type: ACTIONS.UPDATE_SCORECARD, payload: scorecard }),
+    deleteScorecard: (scorecardId) => dispatch({ type: ACTIONS.DELETE_SCORECARD, payload: scorecardId }),
+    
+    // Saved players
+    setSavedPlayers: (names) => dispatch({ type: ACTIONS.SET_SAVED_PLAYERS, payload: names })
   };
 
   return (

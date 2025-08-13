@@ -12,6 +12,9 @@ import BagReport from './pages/BagReport';
 import GetGood from './pages/GetGood';
 import ProBags from './pages/ProBags';
 import ProBagDetail from './pages/ProBagDetail';
+import Scorecards from './pages/Scorecards';
+import NewScorecard from './pages/NewScorecard';
+import Scorecard from './pages/Scorecard';
 import NotFound from './pages/NotFound';
 import './App.css';
 
@@ -32,6 +35,9 @@ function App() {
             <Route path="/get-good" element={<GetGood />} />
             <Route path="/pro-bags" element={<ProBags />} />
             <Route path="/pro-bag/:slug" element={<ProBagDetail />} />
+            <Route path="/scorecards" element={<Scorecards />} />
+            <Route path="/scorecards/new" element={<NewScorecard />} />
+            <Route path="/scorecard/:id" element={<Scorecard />} />
             {/* 404 Catch-all route - must be last */}
             <Route path="*" element={<NotFound />} />
           </Routes>
