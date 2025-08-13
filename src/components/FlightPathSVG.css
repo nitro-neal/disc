@@ -22,6 +22,10 @@
   animation: drawPath 2s ease-in-out;
 }
 
+.flight-path-svg-container.compact .flight-path-line {
+  animation-duration: 1.2s;
+}
+
 @keyframes drawPath {
   from {
     stroke-dasharray: 1000;

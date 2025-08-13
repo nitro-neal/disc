@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { generateBagReport } from '../utils/bagReport';
+import FlightPathModal from '../components/FlightPathModal';
+import CombinedFlightChart from '../components/CombinedFlightChart';
 import './BagReport.css';
 
 function BagReport() {
@@ -9,6 +11,7 @@ function BagReport() {
   const { state } = useApp();
   const [bag, setBag] = useState(null);
   const [reportData, setReportData] = useState(null);
+  const [selectedDisc, setSelectedDisc] = useState(null);
 
   // Scroll to top when component mounts or id changes
   useEffect(() => {
@@ -58,6 +61,19 @@ function BagReport() {
     }
   };
 
+  const discsList = bag?.discs || [];
+
+  const estimateDistance = (disc) => {
+    // Lightweight estimator to size mini charts similar to modal formula (intermediate)
+    const C_skill = 30;
+    const speed = parseInt(disc.speed);
+    const glide = parseInt(disc.glide);
+    const turn = parseInt(disc.turn);
+    const fade = parseInt(disc.fade);
+    const distance = C_skill * speed * (1 + 0.10 * (glide - 4)) * (1 + 0.05 * (-turn)) * (1 - 0.05 * fade);
+    return Math.max(120, Math.min(500, Math.round(distance)));
+  };
+
   return (
     <div className="bag-report">
       <div className="container">
@@ -94,75 +110,11 @@ function BagReport() {
               </div>
             </div>
 
-            {/* Flight Chart */}
-            <div className="flight-chart-container">
+            {/* Combined Flight Chart */}
+            <div className="flight-gallery-container">
               <h2>Flight Chart</h2>
-              <p className="chart-description">
-                Discs plotted by speed (rows) and turn + fade (columns). 
-                Each dot represents a disc in your bag.
-              </p>
-              
-              <div className="flight-chart">
-                {/* Speed labels (left side) */}
-                <div className="speed-labels">
-                  {Array.from({ length: 15 }, (_, i) => (
-                    <div key={15 - i} className="speed-label">
-                      {15 - i}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Main grid */}
-                <div className="flight-grid">
-                  {Array.from({ length: 15 }, (_, speedIndex) => {
-                    const speed = 15 - speedIndex; // Reverse order (15 at top)
-                    return Array.from({ length: 7 }, (_, turnFadeIndex) => {
-                      const turnFadeValue = turnFadeIndex - 3; // -3 to +3
-                      const cellKey = `${speed}-${turnFadeValue}`;
-                      const discsInCell = reportData.flightGrid[cellKey] || [];
-                      
-                      return (
-                        <div 
-                          key={cellKey} 
-                          className="flight-cell"
-                          data-speed={speed}
-                          data-turn-fade={turnFadeValue}
-                        >
-                          {discsInCell.map((disc, index) => (
-                            <div
-                              key={`${disc.id}-${index}`}
-                              className="disc-dot"
-                              style={{ 
-                                backgroundColor: disc.color || getStabilityColor(disc.stability),
-                                transform: `translate(${(index % 3) * 8}px, ${Math.floor(index / 3) * 8}px)`
-                              }}
-                              title={`${disc.name} (${disc.brand}): ${disc.speed}|${disc.glide}|${disc.turn}|${disc.fade}`}
-                            />
-                          ))}
-                        </div>
-                      );
-                    });
-                  })}
-                </div>
-
-                {/* Turn/Fade labels (bottom) */}
-                <div className="turn-fade-labels">
-                  {[-3, -2, -1, 0, 1, 2, 3].map(value => (
-                    <div key={value} className="turn-fade-label">
-                      {value > 0 ? `+${value}` : value}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="chart-legend">
-                <div className="legend-item">
-                  <strong>Rows:</strong> Speed (15 = fastest, 1 = slowest)
-                </div>
-                <div className="legend-item">
-                  <strong>Columns:</strong> Turn + Fade (-3 = right turning, +3 = left hooking)
-                </div>
-              </div>
+              <p className="chart-description">All discs overlaid in one interactive chart. Click a path or marker for details.</p>
+              <CombinedFlightChart discs={discsList} onSelectDisc={setSelectedDisc} />
             </div>
 
             {/* Category Breakdown */}
@@ -232,6 +184,9 @@ function BagReport() {
           </>
         )}
       </div>
+      {selectedDisc && (
+        <FlightPathModal disc={selectedDisc} onClose={() => setSelectedDisc(null)} />
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 // Flight path generation utility based on disc flight numbers
 // Generates SVG path data for visualizing disc flight
 
-export function generateFlightPath(disc, distance = 300, maxDistance = 500) {
+function computeFlightPoints(disc, distance = 300, maxDistance = 500) {
   const speed = parseInt(disc.speed);
   const glide = parseInt(disc.glide);
   const turn = parseInt(disc.turn);
@@ -94,45 +94,54 @@ export function generateFlightPath(disc, distance = 300, maxDistance = 500) {
     
     points.push({ x, y });
   }
-  
+  return { points, width, height };
+}
+
+export function generateFlightGeometry(disc, distance = 300, maxDistance = 500) {
+  const { points } = computeFlightPoints(disc, distance, maxDistance);
+  if (points.length === 0) {
+    return { pathData: '', endPoint: { x: 0, y: 0 } };
+  }
   // Create smooth SVG path using cubic Bezier curves
-  const pathData = [];
-  
+  const pathDataParts = [];
   // Move to start point
-  pathData.push(`M ${points[0].x} ${points[0].y}`);
-  
+  pathDataParts.push(`M ${points[0].x} ${points[0].y}`);
   // Use cubic Bezier curves for maximum smoothness
   for (let i = 1; i < points.length; i++) {
     const current = points[i];
     const prev = points[i - 1];
-    
     if (i === 1) {
       // First segment - use quadratic for smooth start
       const controlX = prev.x + (current.x - prev.x) * 0.5;
       const controlY = prev.y + (current.y - prev.y) * 0.3;
-      pathData.push(`Q ${controlX} ${controlY} ${current.x} ${current.y}`);
+      pathDataParts.push(`Q ${controlX} ${controlY} ${current.x} ${current.y}`);
     } else if (i === points.length - 1) {
       // Last segment - use quadratic for smooth end
       const controlX = prev.x + (current.x - prev.x) * 0.7;
       const controlY = prev.y + (current.y - prev.y) * 0.5;
-      pathData.push(`Q ${controlX} ${controlY} ${current.x} ${current.y}`);
+      pathDataParts.push(`Q ${controlX} ${controlY} ${current.x} ${current.y}`);
     } else {
       // Middle segments - use cubic Bezier for maximum smoothness
       const next = points[i + 1] || current;
       const prevPrev = points[i - 2] || prev;
-      
-      // Calculate control points for smooth curves
       const control1X = prev.x + (current.x - prevPrev.x) * 0.25;
       const control1Y = prev.y + (current.y - prevPrev.y) * 0.25;
       const control2X = current.x - (next.x - prev.x) * 0.25;
       const control2Y = current.y - (next.y - prev.y) * 0.25;
-      
-      pathData.push(`C ${control1X} ${control1Y} ${control2X} ${control2Y} ${current.x} ${current.y}`);
+      pathDataParts.push(`C ${control1X} ${control1Y} ${control2X} ${control2Y} ${current.x} ${current.y}`);
     }
   }
-  
-  return pathData;
+  const pathData = pathDataParts.join(' ');
+  const endPoint = points[points.length - 1];
+  return { pathData, endPoint };
 }
+
+export function generateFlightPath(disc, distance = 300, maxDistance = 500) {
+  // Backward compatible function that returns only path commands array
+  const { pathData } = generateFlightGeometry(disc, distance, maxDistance);
+  return pathData.split(' ');
+}
+  
 
 // Get flight path description in words
 export function getFlightDescription(disc) {

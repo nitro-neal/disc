@@ -71,7 +71,7 @@
 }
 
 /* Flight Chart */
-.flight-chart-container {
+.flight-gallery-container {
   background-color: white;
   padding: var(--spacing-xl);
   border-radius: var(--border-radius);
@@ -79,7 +79,7 @@
   margin-bottom: var(--spacing-xl);
 }
 
-.flight-chart-container h2 {
+.flight-gallery-container h2 {
   color: #1f2937;
   font-size: 1.5rem;
   font-weight: 600;
@@ -92,97 +92,102 @@
   line-height: 1.5;
 }
 
-.flight-chart {
+/* New disc flight grid */
+.disc-flight-grid {
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr auto;
-  gap: var(--spacing-md);
-  max-width: 800px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--spacing-lg);
 }
 
-.speed-labels {
+.disc-flight-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: var(--spacing-sm) 0;
-}
-
-.speed-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #6b7280;
-  text-align: center;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Monaco', 'Menlo', monospace;
-}
-
-.flight-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(15, 1fr);
-  gap: 1px;
-  background-color: #e5e7eb;
+  background: radial-gradient(1200px 200px at 10% 0%, rgba(59,130,246,0.08), transparent), white;
   border: 1px solid #e5e7eb;
   border-radius: var(--border-radius);
-  overflow: hidden;
-}
-
-.flight-cell {
-  background-color: #f9fafb;
-  height: 30px;
-  position: relative;
-  transition: background-color 0.2s ease;
-}
-
-.flight-cell:hover {
-  background-color: #f3f4f6;
-}
-
-.disc-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  top: 2px;
-  left: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow);
+  text-align: left;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
-.disc-dot:hover {
-  transform: scale(1.5) !important;
-  z-index: 10;
+.disc-flight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: #cbd5e1;
 }
 
-.turn-fade-labels {
-  display: flex;
-  justify-content: space-between;
-  padding-left: var(--spacing-sm);
+.disc-flight-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg) 0 var(--spacing-lg);
 }
 
-.turn-fade-label {
-  font-size: 0.75rem;
-  font-weight: 500;
+.disc-chip {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px #ffffff, 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.disc-title {
+  min-width: 0;
+}
+
+.disc-name {
+  font-weight: 700;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.disc-brand {
+  font-size: 0.8rem;
   color: #6b7280;
-  text-align: center;
-  flex: 1;
+}
+
+.disc-numbers-mini {
   font-family: 'Monaco', 'Menlo', monospace;
+  color: #64748b;
+  font-weight: 600;
 }
 
-.chart-legend {
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid #f3f4f6;
-  display: flex;
-  gap: var(--spacing-xl);
-  font-size: 0.875rem;
-  color: #6b7280;
-  flex-wrap: wrap;
+.disc-flight-canvas {
+  padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+}
+
+/* Dark mode updates */
+body.dark-mode .flight-gallery-container {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .flight-gallery-container h2 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .disc-flight-card {
+  background: radial-gradient(1200px 200px at 10% 0%, rgba(147,197,253,0.08), transparent), #0f172a;
+  border-color: #334155;
+}
+
+body.dark-mode .disc-flight-card:hover {
+  border-color: #475569;
+}
+
+body.dark-mode .disc-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .disc-brand {
+  color: #9ca3af;
+}
+
+body.dark-mode .disc-numbers-mini {
+  color: #93c5fd;
 }
 
 /* Category Breakdown */
@@ -391,39 +396,18 @@ body.dark-mode .summary-label {
   color: #9ca3af;
 }
 
-body.dark-mode .flight-chart-container {
+body.dark-mode .flight-chart-container,
+body.dark-mode .flight-gallery-container {
   background-color: #1e293b;
   color: #f1f5f9;
 }
 
-body.dark-mode .flight-chart-container h2 {
+body.dark-mode .flight-chart-container h2,
+body.dark-mode .flight-gallery-container h2 {
   color: #f1f5f9;
 }
 
 body.dark-mode .chart-description {
-  color: #9ca3af;
-}
-
-body.dark-mode .speed-label,
-body.dark-mode .turn-fade-label {
-  color: #9ca3af;
-}
-
-body.dark-mode .flight-grid {
-  background-color: #4b5563;
-  border-color: #4b5563;
-}
-
-body.dark-mode .flight-cell {
-  background-color: #374151;
-}
-
-body.dark-mode .flight-cell:hover {
-  background-color: #4b5563;
-}
-
-body.dark-mode .chart-legend {
-  border-top-color: #4b5563;
   color: #9ca3af;
 }
 
@@ -508,15 +492,6 @@ body.dark-mode .stability-count {
   
   .flight-chart {
     max-width: none;
-  }
-  
-  .flight-cell {
-    height: 20px;
-  }
-  
-  .disc-dot {
-    width: 6px;
-    height: 6px;
   }
   
   .chart-legend {

@@ -1,8 +1,17 @@
 import { useMemo } from 'react';
-import { generateFlightPath } from '../utils/flightPath';
+import { generateFlightGeometry } from '../utils/flightPath';
 import './FlightPathSVG.css';
 
-function FlightPathSVG({ disc, skillLevel, distance, width = 400, height = 600 }) {
+function FlightPathSVG({ 
+  disc, 
+  skillLevel, 
+  distance, 
+  width = 400, 
+  height = 600,
+  compact = false,
+  className = '',
+  style
+}) {
   // Dynamic scaling based on disc category
   const getMaxDistanceForCategory = (category) => {
     switch (category?.toLowerCase()) {
@@ -28,19 +37,27 @@ function FlightPathSVG({ disc, skillLevel, distance, width = 400, height = 600 }
   const maxDistance = getMaxDistanceForCategory(disc.category);
   const distanceMarkers = getDistanceMarkers(maxDistance);
 
-  const flightPath = useMemo(() => {
-    return generateFlightPath(disc, distance, maxDistance);
+  const geometry = useMemo(() => {
+    return generateFlightGeometry(disc, distance, maxDistance);
   }, [disc, distance, maxDistance]);
 
   const viewBox = `0 0 ${width} ${height}`;
-  const pathData = flightPath.join(' ');
+  const pathData = geometry.pathData;
 
   const centerX = width / 2;
   const startY = height - 100; // Release point at bottom
   const endY = 50; // Landing point at top
 
+  // Unique pattern ID to avoid DOM ID collisions when rendering many instances
+  const gridPatternId = useMemo(() => `grid-${Math.random().toString(36).slice(2)}`, []);
+
+  const pathStrokeWidth = compact ? 3 : 4;
+
   return (
-    <div className="flight-path-svg-container">
+    <div 
+      className={`flight-path-svg-container ${compact ? 'compact' : ''} ${className}`.trim()}
+      style={style}
+    >
       <svg
         className="flight-path-svg"
         viewBox={viewBox}
@@ -51,7 +68,7 @@ function FlightPathSVG({ disc, skillLevel, distance, width = 400, height = 600 }
         {/* Background grid */}
         <defs>
           <pattern
-            id="grid"
+            id={gridPatternId}
             width="25"
             height="50"
             patternUnits="userSpaceOnUse"
@@ -65,10 +82,10 @@ function FlightPathSVG({ disc, skillLevel, distance, width = 400, height = 600 }
           </pattern>
         </defs>
         
-        <rect width="100%" height="100%" fill="url(#grid)" />
+        <rect width="100%" height="100%" fill={`url(#${gridPatternId})`} />
         
         {/* Distance markers */}
-        {distanceMarkers.map((dist, index) => {
+        {!compact && distanceMarkers.map((dist) => {
           const y = startY - (startY - endY) * (dist / maxDistance); // Use maxDistance for scaling
           return (
             <g key={dist}>
@@ -98,66 +115,76 @@ function FlightPathSVG({ disc, skillLevel, distance, width = 400, height = 600 }
           d={pathData}
           fill="none"
           stroke="var(--flight-path-color, #3b82f6)"
-          strokeWidth="4"
+          strokeWidth={pathStrokeWidth}
           strokeLinecap="round"
           strokeLinejoin="round"
           className="flight-path-line"
         />
         
         {/* Start point (release) */}
-        <circle
-          cx={centerX}
-          cy={startY}
-          r="8"
-          fill="#10b981"
-          stroke="white"
-          strokeWidth="3"
-        />
+        {!compact && (
+          <circle
+            cx={centerX}
+            cy={startY}
+            r="8"
+            fill="#10b981"
+            stroke="white"
+            strokeWidth="3"
+          />
+        )}
         
         {/* End point (landing) */}
-        <circle
-          cx={centerX + (parseInt(disc.turn) * 10) - (parseInt(disc.fade) * 15)}
-          cy={startY - (startY - endY) * (distance / maxDistance)}
-          r="8"
-          fill="#ef4444"
-          stroke="white"
-          strokeWidth="3"
-        />
+        {!compact && (
+          <circle
+            cx={geometry.endPoint.x}
+            cy={geometry.endPoint.y}
+            r="8"
+            fill="#ef4444"
+            stroke="white"
+            strokeWidth="3"
+          />
+        )}
         
         {/* Labels */}
-        <text
-          x={centerX}
-          y={startY + 25}
-          textAnchor="middle"
-          className="flight-path-label"
-          fill="var(--text-color, #6b7280)"
-          fontWeight="600"
-        >
-          Release Point
-        </text>
+        {!compact && (
+          <text
+            x={centerX}
+            y={startY + 25}
+            textAnchor="middle"
+            className="flight-path-label"
+            fill="var(--text-color, #6b7280)"
+            fontWeight="600"
+          >
+            Release Point
+          </text>
+        )}
         
-        <text
-          x={centerX + (parseInt(disc.turn) * 10) - (parseInt(disc.fade) * 15)}
-          y={startY - (startY - endY) * (distance / maxDistance) - 15}
-          textAnchor="middle"
-          className="flight-path-label"
-          fill="#ef4444"
-          fontWeight="600"
-        >
-          {distance} ft
-        </text>
+        {!compact && (
+          <text
+            x={geometry.endPoint.x}
+            y={geometry.endPoint.y - 15}
+            textAnchor="middle"
+            className="flight-path-label"
+            fill="#ef4444"
+            fontWeight="600"
+          >
+            {distance} ft
+          </text>
+        )}
         
         {/* Direction indicators */}
-        <text
-          x={width - 30}
-          y={startY + 50}
-          textAnchor="middle"
-          className="direction-label"
-          fill="var(--text-color, #9ca3af)"
-          transform={`rotate(-90, ${width - 30}, ${startY + 50})`}
-        >
-          Flight Direction →
-        </text>
+        {!compact && (
+          <text
+            x={width - 30}
+            y={startY + 50}
+            textAnchor="middle"
+            className="direction-label"
+            fill="var(--text-color, #9ca3af)"
+            transform={`rotate(-90, ${width - 30}, ${startY + 50})`}
+          >
+            Flight Direction →
+          </text>
+        )}
       </svg>
     </div>
   );

@@ -1,0 +1,108 @@
+.combined-flight-chart {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: var(--spacing-xl);
+}
+
+.combined-flight-svg {
+  width: 100%;
+  height: auto;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.multi-flight-path {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+  transition: opacity 0.15s ease;
+  cursor: pointer;
+}
+
+.multi-flight-path:hover {
+  opacity: 0.9;
+}
+
+.disc-marker {
+  transition: transform 0.12s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Subtle emphasis without shifting position */
+.disc-marker:hover {
+  transform: scale(1.12);
+}
+
+.combined-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
+}
+
+.legend-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background-color: #f8fafc;
+  border: 1px solid #e5e7eb;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  text-align: left;
+  cursor: pointer;
+}
+
+.legend-item:hover {
+  background-color: #f1f5f9;
+}
+
+.legend-chip {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px #fff, 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.legend-name {
+  font-weight: 600;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legend-numbers {
+  font-family: 'Monaco', 'Menlo', monospace;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Dark mode */
+body.dark-mode .combined-flight-chart {
+  background-color: #1e293b;
+}
+
+body.dark-mode .combined-flight-svg {
+  background-color: #0f172a;
+}
+
+body.dark-mode .legend-item {
+  background-color: #0f172a;
+  border-color: #334155;
+}
+
+body.dark-mode .legend-item:hover {
+  background-color: #111827;
+}
+
+body.dark-mode .legend-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .legend-numbers {
+  color: #93c5fd;
+}
+
+
