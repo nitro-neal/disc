@@ -72,6 +72,18 @@ function Home() {
           )}
         </section>
 
+        {/* Quick Actions */}
+        <section className="quick-actions">
+          <Link to="/scorecards" className="quick-action-card primary">
+            <span className="qa-icon">📋</span>
+            <span className="qa-text">Open Scorecard</span>
+          </Link>
+          <Link to="/bags" className="quick-action-card secondary">
+            <span className="qa-icon">🎒</span>
+            <span className="qa-text">My Bags</span>
+          </Link>
+        </section>
+
         {/* Main Menu Grid */}
         <section className="menu-grid">
           {menuItems.map((item, index) => (
@@ -90,7 +102,10 @@ function Home() {
         {/* Recent Activity */}
         {state.bags.length > 0 && (
           <section className="recent-activity">
-            <h2>Recent Bags</h2>
+            <div className="section-header">
+              <h2>Recent Bags</h2>
+              <Link to="/pro-bags" className="header-link">See Pro Bags →</Link>
+            </div>
             <div className="recent-bags">
               {state.bags.slice(0, 3).map(bag => (
                 <Link key={bag.id} to={`/bag/${bag.id}`} className="recent-bag">
